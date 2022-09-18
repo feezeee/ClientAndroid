@@ -6,10 +6,18 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.kursachclient.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="com.example.kursachclient.presentation.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_bookDescriptionFragment"
+            app:destination="@id/bookDescriptionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.kursachclient.SettingFragment"
+        android:name="com.example.kursachclient.presentation.SettingFragment"
         android:label="SettingFragment" />
+    <fragment
+        android:id="@+id/bookDescriptionFragment"
+        android:name="com.example.kursachclient.presentation.home.book_description.BookDescriptionFragment"
+        android:label="BookDescriptionFragment" />
 </navigation>
