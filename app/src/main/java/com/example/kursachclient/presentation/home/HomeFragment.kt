@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.kursachclient.databinding.FragmentHomeBinding
 
 class HomeFragment: Fragment() {
@@ -27,8 +29,7 @@ class HomeFragment: Fragment() {
         homeViewModel.liveData.observe(viewLifecycleOwner){
             Log.e("TAG", it.toString())
             var adapter = HomeAdapter(it)
-            var linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            binding.rvBooks.layoutManager = linearLayoutManager
+            binding.rvBooks.layoutManager = GridLayoutManager(context, 2)
             binding.rvBooks.adapter = adapter
         }
         homeViewModel.getBooks()
