@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.presentation.home.book_description.BookDescriptionFragment
 import java.lang.Exception
 
 class HomeAdapter (

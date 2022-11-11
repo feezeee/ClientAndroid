@@ -1,4 +1,4 @@
-package com.example.kursachclient.presentation.home.book_description
+package com.example.kursachclient.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

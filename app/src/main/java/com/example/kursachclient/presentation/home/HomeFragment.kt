@@ -32,6 +32,6 @@ class HomeFragment: Fragment() {
             binding.rvBooks.layoutManager = GridLayoutManager(context, 2)
             binding.rvBooks.adapter = adapter
         }
-        homeViewModel.getBooks()
+//        homeViewModel.getBooks()
     }
 }
