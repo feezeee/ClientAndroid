@@ -1,4 +1,4 @@
-package com.example.kursachclient.presentation.home
+package com.example.kursachclient.presentation.fragment.login_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +26,7 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         // Проверка залогинен ли чел
-        if(pref.getValue() == null){
+        if (pref.getValue() == null) {
             (activity as? MainActivity)?.hideBottomNav()
         }
         return binding.root
@@ -40,11 +40,11 @@ class LoginFragment : Fragment() {
         }
         viewModel.tokenLiveData.observe(viewLifecycleOwner){
 
-            if(it.isSuccess){
+            if (it.isSuccess) {
                 pref.saveValue(it.getOrNull()!!.token)
-                findNavController().navigate(R.id.homeFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_bookFragment)
             }
-            else{
+            else {
 //                ............ Делаем что-то
             }
 
@@ -52,7 +52,7 @@ class LoginFragment : Fragment() {
         if(pref.getValue() != null){
             // Проверка действительности токена
             (activity as? MainActivity)?.displayBottomNav()
-            findNavController().navigate(R.id.homeFragment)
+            findNavController().navigate(R.id.bookFragment)
         }
     }
 }

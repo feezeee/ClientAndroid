@@ -1,10 +1,10 @@
-package com.example.kursachclient.domain
+package com.example.kursachclient.domain.model.book
 
-import com.example.kursachclient.domain.model.book.ImageModelForGetBookResponse
+import android.icu.text.CaseMap.Title
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Book(
+data class GetBookResponse (
     @SerializedName("key")
     val id: Int,
     @SerializedName("name")
@@ -16,7 +16,7 @@ data class Book(
     @SerializedName("count")
     val count: Int,
     @SerializedName("image_key")
-    val imageId : Int,
+    val imageId: Int,
     @SerializedName("image")
-    val image : ImageModelForGetBookResponse
-): Serializable
+    val image: ImageModelForGetBookResponse
+) : Serializable

@@ -1,16 +1,17 @@
-package com.example.kursachclient.presentation.home
+package com.example.kursachclient.presentation.fragment.dook_description_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.kursachclient.R
 import com.example.kursachclient.databinding.FragmentBookDescriptionBinding
-import com.example.kursachclient.databinding.FragmentHomeBinding
 import com.example.kursachclient.domain.Book
-import com.example.kursachclient.presentation.home.HomeAdapter
-import com.example.kursachclient.presentation.home.HomeViewModel
+import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.book.GetBookResponse
+import java.lang.Exception
 
 class BookDescriptionFragment : Fragment() {
     lateinit var binding: FragmentBookDescriptionBinding
@@ -26,9 +27,14 @@ class BookDescriptionFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var book = arguments?.getSerializable("book") as Book
+        var book = arguments?.getSerializable("book") as GetBookResponse
         binding.tvName.text = book.name
         binding.tvTitle.text = book.title
-        binding.tvCount.text = book.count.toString()
+        try {
+            Glide.with(view).load(RetrofitInstance.URL + book.image.url)
+                .placeholder(R.drawable.ic_baseline_image_24).into(binding.ivImage)
+        } catch (e: Exception) {
+
+        }
     }
 }

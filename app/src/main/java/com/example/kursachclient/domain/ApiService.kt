@@ -1,21 +1,23 @@
 package com.example.kursachclient.domain
 
-import retrofit2.http.GET
-import retrofit2.http.POST
+import com.example.kursachclient.domain.model.book.GetBookResponse
+import retrofit2.Response
+import retrofit2.http.*
 
 interface ApiService{
 
     @GET("api/Book")
-    suspend fun getBooks(): List<Book>
+    suspend fun getBooks(@Header("Authorization") token: String): Response<List<GetBookResponse>>
 
-    @POST("api/authorize")
-    suspend fun getToken(model: AuthorizeModel): TokenModel
+    @POST("api/Authorization")
+    suspend fun getToken(@Body model: AuthorizeModel): Response<TokenModel>
 
-    @POST("api/register")
-    suspend fun register(model: RegisterModel)
+    @Headers("Content-Type: application/json")
+    @POST("api/Registration")
+    suspend fun register(@Body model: RegisterModel) : Response<Boolean>
 
     @GET("api/login-is-free/check")
-    suspend fun loginIsFree(login:String)
+    suspend fun loginIsFree(login:String) : Response<Any>
 
     @GET("api/user")
     suspend fun getUser(token:String): Any
