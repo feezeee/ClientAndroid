@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.kursachclient.R
@@ -36,23 +37,25 @@ class LoginFragment : Fragment() {
         binding.tvRegister.setOnClickListener { findNavController().navigate(R.id.action_loginFragment_to_registrationFragment) }
         binding.btLogin.setOnClickListener {
             viewModel.login(binding.etLogin.text.toString(), binding.etPassword.text.toString())
-
         }
-        viewModel.tokenLiveData.observe(viewLifecycleOwner){
-
-            if (it.isSuccess) {
-                pref.saveValue(it.getOrNull()!!.token)
+        viewModel.liveData.observe(viewLifecycleOwner){
+            if(it != null && !it.token.isNullOrEmpty()){
+                pref.saveValue(it.token)
+                (activity as? MainActivity)?.displayBottomNav()
                 findNavController().navigate(R.id.action_loginFragment_to_bookFragment)
             }
-            else {
-//                ............ Делаем что-то
-            }
-
+        }
+        viewModel.liveDataToast.observe(viewLifecycleOwner){
+            showToast(it)
         }
         if(pref.getValue() != null){
             // Проверка действительности токена
             (activity as? MainActivity)?.displayBottomNav()
             findNavController().navigate(R.id.bookFragment)
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

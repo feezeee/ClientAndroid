@@ -7,22 +7,36 @@ import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.AuthorizeModel
 import com.example.kursachclient.domain.TokenModel
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.book.GetBookResponse
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
-    private val retrofit = RetrofitInstance.getRetrofitInstance()
-    private val apiService: ApiService = retrofit.create(ApiService::class.java)
-    val tokenLiveData = MutableLiveData<Result<TokenModel>>()
+    val liveData: MutableLiveData<TokenModel> = MutableLiveData()
+    val liveDataToast: MutableLiveData<String> = MutableLiveData()
+    val retrofit = RetrofitInstance.getRetrofitInstance()
+    val apiService = retrofit.create(ApiService::class.java)
 
     fun login(login: String, password: String) {
         viewModelScope.launch {
             try {
                 val model = AuthorizeModel(login, password)
                 val res = apiService.getToken(model)
-//                tokenLiveData.postValue(Result.success(res))
-            }
-            catch (e: Exception){
-                tokenLiveData.postValue(Result.failure(e))
+                if (res.code() == 200) {
+                    if(res.body() != null)
+                    {
+                        liveDataToast.postValue("Вход выполнен успешно")
+                        liveData.postValue(res.body())
+                    }
+                    else {
+                        liveDataToast.postValue("Какие-то проблемы с токеном")
+                    }
+                }
+                else {
+                    liveDataToast.postValue("Проблемы со входом")
+                }
+
+            } catch (e: Exception) {
+                liveDataToast.postValue("Проблемы со входом")
                 e.printStackTrace()
             }
 

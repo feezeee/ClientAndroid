@@ -16,7 +16,7 @@ data class GetBookResponse (
     @SerializedName("count")
     val count: Int,
     @SerializedName("image_key")
-    val imageId: Int,
+    val imageId: Int?,
     @SerializedName("image")
-    val image: ImageModelForGetBookResponse
+    val image: ImageModelForGetBookResponse?
 ) : Serializable

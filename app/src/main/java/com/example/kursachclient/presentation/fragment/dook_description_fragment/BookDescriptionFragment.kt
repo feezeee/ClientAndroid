@@ -16,7 +16,7 @@ import java.lang.Exception
 class BookDescriptionFragment : Fragment() {
     lateinit var binding: FragmentBookDescriptionBinding
 
-        override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,11 +30,21 @@ class BookDescriptionFragment : Fragment() {
         var book = arguments?.getSerializable("book") as GetBookResponse
         binding.tvName.text = book.name
         binding.tvTitle.text = book.title
-        try {
-            Glide.with(view).load(RetrofitInstance.URL + book.image.url)
-                .placeholder(R.drawable.ic_baseline_image_24).into(binding.ivImage)
-        } catch (e: Exception) {
+        if(book.image != null)
+        {
+            try {
+                Glide.with(view).load(RetrofitInstance.URL + book.image?.url)
+                    .placeholder(R.drawable.ic_baseline_image_search_24).into(binding.ivImage)
+            } catch (e: Exception) {
 
+            }
+        }
+        else{
+            try {
+                Glide.with(view).load(R.drawable.no_photos).into(binding.ivImage)
+            } catch (e: Exception) {
+
+            }
         }
     }
 }

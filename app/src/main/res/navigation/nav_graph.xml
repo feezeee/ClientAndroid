@@ -35,5 +35,12 @@
         <action
             android:id="@+id/action_bookFragment_to_bookDescriptionFragment"
             app:destination="@id/bookDescriptionFragment" />
+        <action
+            android:id="@+id/action_bookFragment_to_bookAddFragment"
+            app:destination="@id/bookAddFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/bookAddFragment"
+        android:name="com.example.kursachclient.presentation.fragment.book_add_fragment.BookAddFragment"
+        android:label="BookAddFragment" />
 </navigation>
