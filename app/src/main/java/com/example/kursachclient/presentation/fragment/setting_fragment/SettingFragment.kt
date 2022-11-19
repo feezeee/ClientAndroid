@@ -8,10 +8,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.kursachclient.R
+import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentSettingBinding
 
 class SettingFragment : Fragment() {
     lateinit var binding: FragmentSettingBinding
+    lateinit var pref: SharedPreference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,11 +21,16 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
+        pref = SharedPreference(requireContext())
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val backCallBack = object : OnBackPressedCallback(true) {
+        binding.btnLogout.setOnClickListener {
+            pref.clearValue()
+            findNavController().navigate(R.id.action_settingFragment_to_loginFragment);
+        }
+    //        val backCallBack = object : OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {
 //                findNavController().navigate(R.id.bookFragment)
 //            }

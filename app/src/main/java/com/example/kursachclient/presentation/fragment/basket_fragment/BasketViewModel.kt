@@ -1,18 +1,18 @@
-package com.example.kursachclient.presentation.fragment.book_fragment
+package com.example.kursachclient.presentation.fragment.basket_fragment
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.domain.ApiService
-import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class BookViewModel() : ViewModel() {
-    val liveData: MutableLiveData<List<GetBookResponse>> = MutableLiveData()
+class BasketViewModel : ViewModel() {
+    val liveData: MutableLiveData<List<GetBasketResponse>> = MutableLiveData()
     val liveDataToast: MutableLiveData<String> = MutableLiveData()
     val liveDataExit: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -20,13 +20,13 @@ class BookViewModel() : ViewModel() {
     val retrofit = RetrofitInstance.getRetrofitInstance()
     val apiService = retrofit.create(ApiService::class.java)
 
-    fun getBooks(filterName: String?, token: String) {
+    fun getBasket(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var bookResponse = apiService.getBooks(filterName, "bearer $token")
-                when (bookResponse.code()) {
+                var basketResponse = apiService.getBasket("bearer $token")
+                when (basketResponse.code()) {
                     200 -> {
-                        liveData.postValue(bookResponse.body())
+                        liveData.postValue(basketResponse.body())
                     }
                     400 -> {
                         liveDataToast.postValue("Некорректный запрос")
@@ -49,5 +49,4 @@ class BookViewModel() : ViewModel() {
             }
         }
     }
-
 }

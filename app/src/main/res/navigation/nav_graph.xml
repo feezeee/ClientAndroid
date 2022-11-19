@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.kursachclient.presentation.fragment.setting_fragment.SettingFragment"
-        android:label="SettingFragment" />
+        android:label="SettingFragment" >
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.kursachclient.presentation.fragment.login_fragment.LoginFragment"
@@ -34,13 +38,25 @@
         android:label="HomeFragment">
         <action
             android:id="@+id/action_bookFragment_to_bookDescriptionFragment"
-            app:destination="@id/bookDescriptionFragment" />
+            app:destination="@id/bookDescriptionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_bookFragment_to_bookAddFragment"
-            app:destination="@id/bookAddFragment" />
+            app:destination="@id/bookAddFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/bookAddFragment"
         android:name="com.example.kursachclient.presentation.fragment.book_add_fragment.BookAddFragment"
         android:label="BookAddFragment" />
+    <fragment
+        android:id="@+id/basketFragment"
+        android:name="com.example.kursachclient.presentation.fragment.basket_fragment.BasketFragment"
+        android:label="BasketFragment" />
 </navigation>

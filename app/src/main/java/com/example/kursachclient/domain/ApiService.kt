@@ -1,5 +1,6 @@
 package com.example.kursachclient.domain
 
+import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
@@ -9,7 +10,7 @@ import retrofit2.http.*
 interface ApiService{
 
     @GET("api/Book")
-    suspend fun getBooks(@Header("Authorization") token: String): Response<List<GetBookResponse>>
+    suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String): Response<List<GetBookResponse>>
 
     @POST("api/Book")
     suspend fun addBook(@Header("Authorization") token: String, @Body book: AddBookRequest): Response<Any>
@@ -34,5 +35,9 @@ interface ApiService{
 
     @GET("api/user")
     suspend fun getUser(token:String): Any
+
+    //Basket
+    @GET("api/basket")
+    suspend fun getBasket(@Header("Authorization") token: String) : Response<List<GetBasketResponse>>
 
 }
