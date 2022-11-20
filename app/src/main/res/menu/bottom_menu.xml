@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_baseline_shopping_basket_24"
         android:title="Корзина" />
     <item
+        android:id="@+id/orderFragment"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Заказы" />
+    <item
         android:id="@+id/settingFragment"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Насторйки" />

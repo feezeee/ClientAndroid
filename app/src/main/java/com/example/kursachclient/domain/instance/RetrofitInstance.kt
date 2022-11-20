@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitInstance {
     companion object{
-        const val URL = "http://192.168.43.74:5217/"
+        const val URL = "http://192.168.100.53:5217/"
 
         fun getRetrofitInstance(): Retrofit {
             return Retrofit.Builder()
