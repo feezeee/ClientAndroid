@@ -20,11 +20,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:src="@drawable/no_photos"
                 android:layout_margin="10dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:background="@drawable/rounded_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

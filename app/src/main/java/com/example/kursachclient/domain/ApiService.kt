@@ -1,6 +1,7 @@
 package com.example.kursachclient.domain
 
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
@@ -11,6 +12,9 @@ interface ApiService{
 
     @GET("api/Book")
     suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String): Response<List<GetBookResponse>>
+
+    @GET("api/book/{key}")
+    suspend fun getBookByKey(@Path("key") key: Int, @Header("Authorization") token: String): Response<GetBookResponse?>
 
     @POST("api/Book")
     suspend fun addBook(@Header("Authorization") token: String, @Body book: AddBookRequest): Response<Any>
@@ -39,5 +43,11 @@ interface ApiService{
     //Basket
     @GET("api/basket")
     suspend fun getBasket(@Header("Authorization") token: String) : Response<List<GetBasketResponse>>
+
+    @POST("api/basket")
+    suspend fun addOrDeleteBookFromBasket(@Body bookItem: AddOrRemoveBookFromBasketRequest, @Header("Authorization") token: String) : Response<Unit>
+
+    @DELETE("api/basket/clear")
+    suspend fun clearBasket(@Header("Authorization") token: String) : Response<Unit>
 
 }

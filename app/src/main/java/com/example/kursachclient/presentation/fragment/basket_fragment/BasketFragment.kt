@@ -41,6 +41,11 @@ class BasketFragment : Fragment() {
             binding.rvBasketItems.layoutManager = GridLayoutManager(context, 1)
             binding.rvBasketItems.adapter = adapter
         }
+        binding.tvClearBasket.setOnClickListener{
+            // Добавить проверку на pref
+            viewModel.clearBasket(pref.getValue().toString())
+        }
+        // Добавить проверку на pref
         viewModel.getBasket(pref.getValue().toString())
 //        viewModel.liveDataToast.observe(viewLifecycleOwner) {
 //            Log.e("TAG", it.toString())
