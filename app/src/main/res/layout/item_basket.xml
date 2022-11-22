@@ -214,57 +214,6 @@
             <!--            </LinearLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/ll_plus_minus"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:gravity="center"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            android:layout_margin="10dp"-->
-        <!--            android:background="@drawable/rounded_linear_layout">-->
-        <!--            <ImageButton-->
-        <!--                style="?android:attr/borderlessButtonStyle"-->
-        <!--                android:id="@+id/imgbtn_basket_minus"-->
-        <!--                android:layout_width="40dp"-->
-        <!--                android:layout_height="40dp"-->
-        <!--                android:scaleType="center"-->
-        <!--                android:src="@drawable/ic_baseline_remove_24"-->
-        <!--                android:textAlignment="center"-->
-        <!--                android:contentDescription="Минус"-->
-        <!--                android:cropToPadding="false"/>-->
-        <!--            <TextView-->
-        <!--                android:id="@+id/tv_basket_count"-->
-        <!--                android:layout_width="40dp"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:maxWidth="40dp"-->
-        <!--                android:paddingHorizontal="5dp"-->
-        <!--                android:paddingVertical="5dp"-->
-        <!--                android:text="999"-->
-        <!--                android:maxLines="1"-->
-        <!--                android:textAlignment="center"-->
-        <!--                android:gravity="center"-->
-        <!--                android:textColor="@color/black"/>-->
-        <!--            <ImageButton-->
-        <!--                style="?android:attr/borderlessButtonStyle"-->
-        <!--                android:id="@+id/imgbtn_basket_plus"-->
-        <!--                android:layout_width="40dp"-->
-        <!--                android:layout_height="40dp"-->
-        <!--                android:src="@drawable/ic_baseline_add_24"-->
-        <!--                android:scaleType="center"-->
-        <!--                android:textAlignment="center"-->
-        <!--                android:contentDescription="плюс"/>-->
-        <!--        </LinearLayout>-->
-<!--        <View-->
-<!--            android:backgroundTint="@color/black"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="0dp"/>-->
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
