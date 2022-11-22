@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Denis.Button" parent="Widget.AppCompat.ImageButton">
+        <item name="cornerRadius">100dp</item>
+        <item name="background">@color/purple_200</item>
+
+    </style>
 </resources>

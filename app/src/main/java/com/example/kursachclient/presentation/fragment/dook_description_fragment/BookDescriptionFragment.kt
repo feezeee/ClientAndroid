@@ -38,8 +38,8 @@ class BookDescriptionFragment : Fragment() {
         var book = arguments?.getSerializable("book") as GetBookResponse
         viewModel.liveData.observe(viewLifecycleOwner) {
             Log.e("TAG", it.toString())
-            binding.tvName.text = it.name
-            binding.tvTitle.text = it.title
+            binding.tvDescriptionBookName.text = it.name
+            binding.tvDescriptionBookTitle.text = it.title
             if(it.image != null)
             {
                 try {

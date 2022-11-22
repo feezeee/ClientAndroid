@@ -14,7 +14,7 @@ data class BookModelForGetBasketResponse(
     @SerializedName("price")
     val price: Double,
     @SerializedName("count")
-    val count: Int,
+    val count: UInt,
     @SerializedName("image_key")
     val imageId: Int?,
     @SerializedName("image")

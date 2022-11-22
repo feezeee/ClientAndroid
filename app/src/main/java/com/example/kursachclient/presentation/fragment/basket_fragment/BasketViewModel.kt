@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,6 @@ class BasketViewModel : ViewModel() {
             }
         }
     }
-
     fun clearBasket(token: String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -58,6 +58,36 @@ class BasketViewModel : ViewModel() {
                     200 -> {
                         liveDataToast.postValue("Корзина очищена")
                         liveData.postValue(ArrayList<GetBasketResponse>())
+                    }
+                    400 -> {
+                        liveDataToast.postValue("Некорректный запрос")
+                    }
+                    401 -> {
+                        liveDataToast.postValue("Ошибка авторизации")
+                        // Делаем разлогин
+                        liveDataExit.postValue(true)
+                    }
+                    403 -> {
+                        liveDataToast.postValue("У вас нет прав")
+                    }
+                    else -> {
+                        liveDataToast.postValue("Ошибка на сервере")
+                    }
+                }
+            } catch (ex: Exception) {
+                liveDataToast.postValue("Ошибка на сервере")
+                Log.e("TAG", ex.toString())
+            }
+        }
+    }
+
+    fun addOrRemoveItemFromBasket(item: AddOrRemoveBookFromBasketRequest, token: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                var basketResponse = apiService.addOrDeleteBookFromBasket(item,"bearer $token")
+                when (basketResponse.code()) {
+                    200 -> {
+                        liveDataToast.postValue("Корзина была обновлена")
                     }
                     400 -> {
                         liveDataToast.postValue("Некорректный запрос")

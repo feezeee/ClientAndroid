@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#EAEAEA">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/et_search_book"
@@ -22,7 +23,8 @@
         android:id="@+id/rv_Books"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_search_book" />
 

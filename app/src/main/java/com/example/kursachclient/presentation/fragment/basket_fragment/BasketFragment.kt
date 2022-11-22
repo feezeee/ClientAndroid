@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBasketBinding
 import com.example.kursachclient.databinding.FragmentBookAddBinding
+import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.AddBookRequest
+import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
 import com.example.kursachclient.presentation.fragment.book_add_fragment.BookAddViewModel
 import com.example.kursachclient.presentation.fragment.book_fragment.BookAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.Exception
 
 class BasketFragment : Fragment() {
@@ -35,9 +39,12 @@ class BasketFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        binding.tvBasketBack.setOnClickListener {
+//            this.dismiss()
+//        }
         viewModel.liveData.observe(viewLifecycleOwner) {
             Log.e("TAG", it.toString())
-            var adapter = BasketAdapter(it)
+            var adapter = BasketAdapter(it) { clickListener(it) }
             binding.rvBasketItems.layoutManager = GridLayoutManager(context, 1)
             binding.rvBasketItems.adapter = adapter
         }
@@ -82,6 +89,25 @@ class BasketFragment : Fragment() {
 //
 //            }
 //        }
+    }
+
+    private fun clickListener(item: GetBasketResponse) : GetBasketResponse? {
+        var basketDialogFragment = BasketDialogFragment(0u, item.book.count, item)
+        var basketItemReponse : GetBasketResponse? = null
+
+        childFragmentManager.setFragmentResultListener(
+            "REQUEST_FEEZE",
+            viewLifecycleOwner) { resultKey, bundle ->
+
+            if (resultKey == "REQUEST_FEEZE") {
+
+                val basketItem =  bundle.getSerializable("BASKET_ITEM")
+                basketItemReponse = basketItem as GetBasketResponse?
+
+            }
+        }
+        basketDialogFragment.show(childFragmentManager, "kek")
+        return basketItemReponse
     }
 
     private fun showToast(message: String) {

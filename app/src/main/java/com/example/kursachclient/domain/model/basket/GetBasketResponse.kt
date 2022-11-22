@@ -9,5 +9,5 @@ data class GetBasketResponse(
     @SerializedName("book")
     val book: BookModelForGetBasketResponse,
     @SerializedName("count")
-    val count: Int
+    var count: UInt
 ) : Serializable

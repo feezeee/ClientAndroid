@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EAEAEA">
     <RelativeLayout
-        android:id="@+id/rl_header"
+        android:id="@+id/rl_basket_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -13,11 +14,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp">
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_basket_back"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/ic_baseline_close_24"/>
+            android:background="@drawable/ic_baseline_close_24"
+            android:visibility="invisible"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_centerHorizontal="true"
@@ -37,15 +40,15 @@
             android:background="@drawable/ic_baseline_delete_24"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_static_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Ваша корзина"
-        android:textSize="14pt"
-        app:layout_constraintStart_toStartOf="@id/rl_header"
-        app:layout_constraintTop_toBottomOf="@id/rl_header" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_static_text"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="Ваша корзина"-->
+<!--        android:textSize="14pt"-->
+<!--        app:layout_constraintStart_toStartOf="@id/rl_header"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/rl_header" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_basket_items"
@@ -54,7 +57,19 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_static_text"
+        app:layout_constraintTop_toBottomOf="@+id/rl_basket_header"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="51dp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_basket_complete_basket"
+        android:backgroundTint="#367385"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tooltipText="Оформить заказ">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

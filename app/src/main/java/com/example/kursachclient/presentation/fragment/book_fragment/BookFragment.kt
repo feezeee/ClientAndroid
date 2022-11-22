@@ -33,9 +33,9 @@ class BookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         checkPrefToken()
-        viewModel.liveData.observe(viewLifecycleOwner) {
-            Log.e("TAG", it.toString())
-            var adapter = BookAdapter(it) { clickLongListener(it) }
+        viewModel.liveData.observe(viewLifecycleOwner) { getBookResponseList ->
+            Log.e("TAG", getBookResponseList.toString())
+            var adapter = BookAdapter(getBookResponseList) { clickLongListener(it) }
             binding.rvBooks.layoutManager = GridLayoutManager(context, 2)
             binding.rvBooks.adapter = adapter
         }
