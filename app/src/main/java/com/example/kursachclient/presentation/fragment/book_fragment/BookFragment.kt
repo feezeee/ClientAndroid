@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,8 @@ import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookBinding
 import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.MainActivity
+import com.google.android.material.snackbar.Snackbar
 
 class BookFragment : Fragment() {
     lateinit var binding: FragmentBookBinding
@@ -32,6 +35,21 @@ class BookFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Snackbar.make(
+                    binding.root,
+                    "Do you want to exit?", Snackbar.LENGTH_SHORT
+                )
+                    .setAction("Exit") {
+                        activity?.finish()
+                    }.show()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
+
+
         checkPrefToken()
         viewModel.liveData.observe(viewLifecycleOwner) { getBookResponseList ->
             Log.e("TAG", getBookResponseList.toString())
@@ -80,6 +98,8 @@ class BookFragment : Fragment() {
 
         viewModel.getBooks(null, pref.getValue().toString())
     }
+
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()

@@ -9,22 +9,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBasketBinding
-import com.example.kursachclient.databinding.FragmentBookAddBinding
+import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import com.example.kursachclient.domain.model.book.AddBookRequest
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
-import com.example.kursachclient.presentation.fragment.book_add_fragment.BookAddViewModel
-import com.example.kursachclient.presentation.fragment.book_fragment.BookAdapter
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.lang.Exception
 
 class BasketFragment : Fragment() {
     lateinit var binding: FragmentBasketBinding
     lateinit var pref: SharedPreference
     lateinit var viewModel: BasketViewModel
+    lateinit var adapter: BasketAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,16 +35,16 @@ class BasketFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        binding.tvBasketBack.setOnClickListener {
-//            this.dismiss()
-//        }
+        checkPrefToken()
         viewModel.liveData.observe(viewLifecycleOwner) {
             Log.e("TAG", it.toString())
-            var adapter = BasketAdapter(it) { clickListener(it) }
+            adapter = BasketAdapter(it) { basket, position ->
+                clickListener(basket, position)
+            }
             binding.rvBasketItems.layoutManager = GridLayoutManager(context, 1)
             binding.rvBasketItems.adapter = adapter
         }
-        binding.tvClearBasket.setOnClickListener{
+        binding.tvClearBasket.setOnClickListener {
             // Добавить проверку на pref
             viewModel.clearBasket(pref.getValue().toString())
         }
@@ -58,12 +54,12 @@ class BasketFragment : Fragment() {
 //            Log.e("TAG", it.toString())
 //            showToast(it)
 //        }
-//        viewModel.liveDataExit.observe(viewLifecycleOwner) {
-//            if (it == true) {
-//                // Делаем разлогин
-////                pref.clearValue()
-//            }
-//        }
+        viewModel.liveDataExit.observe(viewLifecycleOwner) {
+            if (it == true) {
+                // Делаем разлогин
+//                pref.clearValue()
+            }
+        }
 //        viewModel.liveDataComplete.observe(viewLifecycleOwner) {
 //            if (it == true) {
 //                // Делаем разлогин
@@ -91,26 +87,38 @@ class BasketFragment : Fragment() {
 //        }
     }
 
-    private fun clickListener(item: GetBasketResponse) : GetBasketResponse? {
+    private fun clickListener(item: GetBasketResponse, position: Int) {
+
         var basketDialogFragment = BasketDialogFragment(0u, item.book.count, item)
-        var basketItemReponse : GetBasketResponse? = null
 
         childFragmentManager.setFragmentResultListener(
             "REQUEST_FEEZE",
-            viewLifecycleOwner) { resultKey, bundle ->
+            viewLifecycleOwner
+        ) { resultKey, bundle ->
 
             if (resultKey == "REQUEST_FEEZE") {
+                val basketItem = bundle.getSerializable("BASKET_ITEM") as GetBasketResponse
+                checkPrefToken()
 
-                val basketItem =  bundle.getSerializable("BASKET_ITEM")
-                basketItemReponse = basketItem as GetBasketResponse?
+                var item = AddOrRemoveBookFromBasketRequest(basketItem.book.id, basketItem.count)
 
+                viewModel.addOrRemoveItemFromBasket(item, pref.getValue().toString())
+
+                adapter.notifyItemChanged(position, basketItem)
             }
         }
         basketDialogFragment.show(childFragmentManager, "kek")
-        return basketItemReponse
     }
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun checkPrefToken(){
+        if(pref.getValue() == null){
+            // Перекидываем на экран входа
+            pref.clearValue()
+            findNavController().navigate(R.id.loginFragment)
+        }
     }
 }

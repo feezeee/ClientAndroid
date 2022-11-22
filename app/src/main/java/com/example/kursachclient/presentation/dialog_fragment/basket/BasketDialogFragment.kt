@@ -1,5 +1,7 @@
 package com.example.kursachclient.presentation.dialog_fragment.basket
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,8 +28,16 @@ class BasketDialogFragment(private val minValue: UInt, private val maxValue: UIn
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var newMaxValue = maxValue.toInt()
+        if(newMaxValue > 99)
+        {
+            newMaxValue = 99
+        }
+
         binding.npBasketNumberPicker.minValue = minValue.toInt()
-        binding.npBasketNumberPicker.maxValue = maxValue.toInt()
+        binding.npBasketNumberPicker.maxValue = newMaxValue
         binding.npBasketNumberPicker.value = item.count.toInt()
         binding.btnBasketSetNumber.setOnClickListener {
             item.count = binding.npBasketNumberPicker.value.toUInt()

@@ -36,8 +36,14 @@
         android:id="@+id/bookFragment"
         android:name="com.example.kursachclient.presentation.fragment.book_fragment.BookFragment"
         android:label="HomeFragment">
+
         <action
             android:id="@+id/action_bookFragment_to_bookDescriptionFragment"
+
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+
             app:destination="@id/bookDescriptionFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"

@@ -1,29 +1,27 @@
 package com.example.kursachclient.presentation.fragment.basket_fragment
 
 import android.graphics.Color
-import android.util.Log
+import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import com.example.kursachclient.domain.model.book.GetBookResponse
-import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
 import java.math.RoundingMode
 
 class BasketAdapter(
     private val basketList: List<GetBasketResponse>,
-    private val clickListener: (GetBasketResponse) -> GetBasketResponse?
+    private val clickListener: (GetBasketResponse, Int) -> Unit
 ) : RecyclerView.Adapter<BasketAdapter.DescriptionCoinViewHolder>() {
 
-    private val editedBasketList = mutableListOf<GetBasketResponse>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,7 +32,7 @@ class BasketAdapter(
     }
 
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
-        holder.bind(basketList[position])
+        holder.bind(basketList[position], position)
     }
 
     override fun getItemCount(): Int = basketList.size
@@ -42,115 +40,45 @@ class BasketAdapter(
     inner class DescriptionCoinViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
+        private val mainCardView: CardView = itemView.findViewById(R.id.cv_basket_main_card_view)
         private val mainImage: ImageView = itemView.findViewById(R.id.iv_basket_main_image)
         private val name: TextView = itemView.findViewById(R.id.tv_basket_name)
         private val price: TextView = itemView.findViewById(R.id.tv_basket_price)
         private val count: TextView = itemView.findViewById(R.id.tv_basket_count)
         private val resultPriceItem: TextView = itemView.findViewById(R.id.tv_basket_full_price_item)
-        private val qwe: LinearLayout = itemView.findViewById(R.id.ll_basket_static_count_count)
-//        private val btnMinus: ImageButton = itemView.findViewById(R.id.imgbtn_basket_minus)
-//        private val btnPlus: ImageButton = itemView.findViewById(R.id.imgbtn_basket_plus)
+        private val linearLayoutClickable: LinearLayout = itemView.findViewById(R.id.ll_basket_static_count_count)
 
-        fun bind(item: GetBasketResponse) {
+        private val noItemsTextView: TextView = itemView.findViewById(R.id.tv_basket_static_no_items)
+
+
+        fun bind(item: GetBasketResponse, position: Int) {
             name.text = item.book.name
             count.text = item.count.toString()
-            price.text = item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
-            resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
+            price.text =
+                item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
+            resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal()
+                .setScale(2, RoundingMode.UP).toDouble().toString()
 
-            qwe.setOnClickListener {
-                var result = clickListener(item)
-                if(result != null)
-                {
-                    Log.d("KEK", result.toString())
+            if(item.count > 0u && item.book.count > 0u)
+            {
+                mainCardView.foreground = ColorDrawable(Color.TRANSPARENT)
+                noItemsTextView.visibility = View.GONE
+                linearLayoutClickable.setOnClickListener {
+                    clickListener(item, position)
                 }
-                count.text = item.count.toString()
-                price.text = item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
-                resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
             }
-
-//            if(item.count == 0u)
-//            {
-//                btnMinus.isEnabled = false
-//            }
-//            if(item.count < item.book.count)
-//            {
-//                btnPlus.isEnabled = true
-//            }
-//            if(0u < item.count && item.count < item.book.count){
-//                btnMinus.isEnabled = true
-//                btnPlus.isEnabled = true
-//            }
-//            if(item.count == item.book.count){
-//                btnPlus.isEnabled = false
-//            }
-//
-//            btnMinus.setOnClickListener {
-//                if(btnMinus.isEnabled) {
-//                    var existEditedItem = editedBasketList.firstOrNull() { it -> it.book.id == item.book.id }
-//                    if(existEditedItem == null){
-//                        if(item.count > 0u) {
-//                            item.count--
-//                            count.text = item.count.toString()
-//                            editedBasketList.add(item)
-//                        }
-//                    }
-//                    else {
-//                        if(item.count > 0u) {
-//                            item.count--
-//                            count.text = item.count.toString()
-//                        }
-//                    }
-//                    if(item.count == 0u)
-//                    {
-//                        btnMinus.isEnabled = false
-//                    }
-//                    if(item.count < item.book.count)
-//                    {
-//                        btnPlus.isEnabled = true
-//                    }
-//                    if(0u < item.count && item.count < item.book.count){
-//                        btnMinus.isEnabled = true
-//                        btnPlus.isEnabled = true
-//                    }
-//                    if(item.count == item.book.count){
-//                        btnPlus.isEnabled = false
-//                    }
-//                }
-//            }
-//
-//            btnPlus.setOnClickListener {
-//                if(btnPlus.isEnabled) {
-//                    var existEditedItem = editedBasketList.firstOrNull() { it -> it.book.id == item.book.id }
-//                    if(existEditedItem == null){
-//                        if(item.count < item.book.count) {
-//                            item.count++
-//                            count.text = item.count.toString()
-//                            editedBasketList.add(item)
-//                        }
-//                    }
-//                    else {
-//                        if(item.count < item.book.count) {
-//                            item.count++
-//                            count.text = item.count.toString()
-//                        }
-//                    }
-//                    if(item.count == 0u)
-//                    {
-//                        btnMinus.isEnabled = false
-//                    }
-//                    if(item.count < item.book.count)
-//                    {
-//                        btnPlus.isEnabled = true
-//                    }
-//                    if(0u < item.count && item.count < item.book.count){
-//                        btnMinus.isEnabled = true
-//                        btnPlus.isEnabled = true
-//                    }
-//                    if(item.count == item.book.count){
-//                        btnPlus.isEnabled = false
-//                    }
-//                }
-//            }
+            else if(item.count == 0u && item.book.count > 0u)
+            {
+                mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
+                linearLayoutClickable.setOnClickListener {
+                    clickListener(item, position)
+                }
+            }
+            else if(item.count == 0u && item.book.count == 0u)
+            {
+                mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
+                noItemsTextView.visibility = View.VISIBLE
+            }
 
             if(item.book.image == null) {
                 Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
@@ -161,9 +89,5 @@ class BasketAdapter(
             }
 
         }
-    }
-
-    fun getEditedItems() : List<GetBasketResponse>{
-        return editedBasketList
     }
 }

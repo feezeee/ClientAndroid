@@ -58,23 +58,6 @@ class BookAdapter(
                     .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImage)
             }
 
-//            if(item.image != null)
-//            {
-//                try {
-//                    Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
-//                        .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImage)
-//                } catch (e: Exception) {
-//
-//                }
-//            }
-//            else {
-//                try {
-//                    Glide.with(itemView).load(R.drawable.no_photos).into(mainImage)
-//                } catch (e: Exception) {
-//
-//                }
-//            }
-
             itemView.setOnClickListener {
                 val favoriteFragment = BookDescriptionFragment()
                 var book = GetBookResponse(
