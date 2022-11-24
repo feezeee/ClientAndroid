@@ -17,12 +17,15 @@ import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import java.math.BigDecimal
 import java.math.RoundingMode
 
 //private val longClickListener: (GetBasketResponse, Int) -> Unit
 class BasketAdapter(
     private val basketList: List<GetBasketResponse>,
-    private val clickListener: (GetBasketResponse, Int) -> Unit
+    private val clickListener: (GetBasketResponse, Int) -> Unit,
+    private val showFullPrice: (BigDecimal) -> Unit,
+    private val hideOrReviewBasketComplete: (BigDecimal) -> Unit
 ) : RecyclerView.Adapter<BasketAdapter.DescriptionCoinViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -35,7 +38,7 @@ class BasketAdapter(
     }
 
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
-        holder.bind(basketList[position], position)
+        holder.bind(basketList[position], position, basketList)
     }
 
     override fun getItemCount(): Int = basketList.size
@@ -48,6 +51,8 @@ class BasketAdapter(
         private val name: TextView = itemView.findViewById(R.id.tv_basket_name)
         private val price: TextView = itemView.findViewById(R.id.tv_basket_price)
         private val count: TextView = itemView.findViewById(R.id.tv_basket_count)
+
+
         private val resultPriceItem: TextView =
             itemView.findViewById(R.id.tv_basket_full_price_item)
         private val linearLayoutClickable: LinearLayout =
@@ -57,11 +62,13 @@ class BasketAdapter(
             itemView.findViewById(R.id.tv_basket_static_no_items)
 
 
-        fun bind(item: GetBasketResponse, position: Int) {
+        fun bind(item: GetBasketResponse, position: Int, list: List<GetBasketResponse>) {
+            var fullPrice = calculateFullPrice(list)
+            hideOrReviewBasketComplete(fullPrice)
+            showFullPrice(fullPrice)
             name.text = item.book.name
             count.text = item.count.toString()
-            price.text =
-                item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
+            price.text = item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
             resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal()
                 .setScale(2, RoundingMode.UP).toDouble().toString()
 
@@ -95,6 +102,12 @@ class BasketAdapter(
                     .into(mainImage)
             }
 
+        }
+
+        fun calculateFullPrice(list: List<GetBasketResponse>) : BigDecimal{
+            var result : Double = 0.0
+            list.filter { it -> it.count > 0u && it.book.count > 0u }.forEach{ it ->  result += ( it.book.price * it.count.toDouble())}
+            return result.toBigDecimal().setScale(2, RoundingMode.UP)
         }
     }
 }

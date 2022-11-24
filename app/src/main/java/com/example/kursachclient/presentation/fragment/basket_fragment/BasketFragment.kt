@@ -1,11 +1,13 @@
 package com.example.kursachclient.presentation.fragment.basket_fragment
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +17,7 @@ import com.example.kursachclient.databinding.FragmentBasketBinding
 import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
+import java.math.BigDecimal
 
 class BasketFragment : Fragment() {
     lateinit var binding: FragmentBasketBinding
@@ -36,11 +39,18 @@ class BasketFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         checkPrefToken()
+
         viewModel.liveData.observe(viewLifecycleOwner) {
             Log.e("TAG", it.toString())
-            adapter = BasketAdapter(it) { basket, position ->
-                clickListener(basket, position)
-            }
+//            adapter = BasketAdapter(it) { basket, position ->
+//                clickListener(basket, position)
+//            }
+            adapter = BasketAdapter(
+                it,
+                { basket, position ->
+                clickListener(basket, position) },
+                { coast -> setFullPrice(coast) },
+                { coast -> hideOrReviewBasketComplete(coast) })
             binding.rvBasketItems.layoutManager = GridLayoutManager(context, 1)
             binding.rvBasketItems.adapter = adapter
         }
@@ -112,6 +122,19 @@ class BasketFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun setFullPrice(price: BigDecimal){
+        binding.tvBasketFullPrice.text = price.toString()
+    }
+
+    private fun hideOrReviewBasketComplete(price: BigDecimal){
+        if(price.toInt() == 0){
+            binding.fabBasketCompleteBasket.visibility = View.GONE
+        }
+        else if(price.toInt() > 0){
+            binding.fabBasketCompleteBasket.visibility = View.VISIBLE
+        }
     }
 
     private fun checkPrefToken(){
