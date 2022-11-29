@@ -64,7 +64,6 @@ class BookAddFragment : Fragment() {
                     binding.etName.text.toString(),
                     binding.etTitle.text.toString(),
                     binding.etPrice.text.toString().toDouble(),
-                    binding.etCount.text.toString().toUInt(),
                     null
                 )
             viewModel.addBook(book, pref.getValue().toString())

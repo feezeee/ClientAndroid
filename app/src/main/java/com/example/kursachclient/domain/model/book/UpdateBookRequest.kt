@@ -11,8 +11,6 @@ data class UpdateBookRequest(
     var title: String,
     @SerializedName("price")
     var price : String,
-    @SerializedName("count")
-    var count : UInt,
     @SerializedName("image_key")
     var imageId : Int?
 )

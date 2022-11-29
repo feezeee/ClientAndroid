@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/ll_person_phone_number"
+                android:id="@+id/ll_order_item_person_phone_number"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,19 +31,20 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="20dp"
                 android:layout_marginVertical="20dp">
-                <androidx.appcompat.widget.AppCompatTextView
-
-                    android:maxWidth="220dp"
+                <TextView
+                    android:id="@+id/tv_order_item_full_name"
+                    android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Денис Cкурат"
+                    android:text="Денис Скурат"
                     android:textSize="10pt"
                     android:textColor="#383E42"
                     android:maxLines="1"
                     android:ellipsize="end"/>
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
+                    android:id="@+id/tv_order_item_phone_number"
                     android:layout_marginTop="5dp"
-                    android:maxWidth="220dp"
+                    android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="+375 29 830 63 61"
@@ -53,11 +54,11 @@
                     android:ellipsize="end"/>
             </LinearLayout>
             <TextView
-                android:id="@+id/tv_full_price"
+                android:id="@+id/tv_order_item_full_price"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_static_valute_text"
-                app:layout_constraintStart_toEndOf="@id/ll_person_phone_number"
+                app:layout_constraintEnd_toStartOf="@id/tv_order_item_static_value_text"
+                app:layout_constraintStart_toEndOf="@id/ll_order_item_person_phone_number"
                 android:layout_marginLeft="10dp"
                 android:layout_width="0dp"
                 android:textAlignment="textEnd"
@@ -65,18 +66,17 @@
                 android:text="999999"
                 android:textSize="10pt"
                 android:textColor="#383E42"
-                android:layout_marginRight="3dp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
             <TextView
-                android:id="@+id/tv_static_valute_text"
+                android:id="@+id/tv_order_item_static_value_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginRight="20dp"
-                android:text="руб."/>
+                android:text=" р."/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

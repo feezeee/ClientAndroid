@@ -1,6 +1,8 @@
 package com.example.kursachclient.presentation.fragment.book_fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,7 @@ class BookFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        progressBarIsDisplayed(true)
 
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -49,71 +52,75 @@ class BookFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
 
-
-        checkPrefToken()
         viewModel.liveData.observe(viewLifecycleOwner) { getBookResponseList ->
             Log.e("TAG", getBookResponseList.toString())
+            Log.e("KEK", Looper.myLooper().toString())
             var adapter = BookAdapter(getBookResponseList) { clickLongListener(it) }
-            binding.rvBooks.layoutManager = GridLayoutManager(context, 2)
-            binding.rvBooks.adapter = adapter
+            binding.rvBookBooks.layoutManager = GridLayoutManager(context, 2)
+            binding.rvBookBooks.adapter = adapter
+            progressBarIsDisplayed(false)
         }
-        viewModel.liveDataToast.observe(viewLifecycleOwner) {
-            Log.e("TAG", it.toString())
-            showToast(it)
+
+        viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
+            showToast(message)
         }
-        viewModel.liveDataExit.observe(viewLifecycleOwner) {
-            if (it == true) {
-                // Делаем разлогин
-            }
+
+        viewModel.liveDataSignOutAndRedirect.observe(viewLifecycleOwner) {
+            signOutAndRedirect()
         }
+
         binding.fabAddBook.setOnClickListener {
             findNavController().navigate(R.id.action_bookFragment_to_bookAddFragment)
         }
-//        object : SearchView.OnQueryTextListener
-        binding.etSearchBook.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+        binding.svBookSearchBook.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                progressBarIsDisplayed(true)
                 Log.d("TAG", "onQueryTextSubmit: ")
-                checkPrefToken()
-                viewModel.getBooks(if(query.isNullOrEmpty()) null else query, pref.getValue().toString())
-                binding.etSearchBook.clearFocus()
+                viewModel.getBooks(if(query.isNullOrEmpty()) null else query, pref.getValue())
+                binding.svBookSearchBook.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()){
-                    viewModel.getBooks(null, pref.getValue().toString())
-                    binding.etSearchBook.clearFocus()
+                    progressBarIsDisplayed(true)
+                    viewModel.getBooks(null, pref.getValue())
                 }
                 return true
             }
 
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                // if query text is change in that case we
-//                // are filtering our adapter with
-//                // new text on below line.
-//                listAdapter.filter.filter(newText)
-//                return false
-//            }
         })
 
-        viewModel.getBooks(null, pref.getValue().toString())
+        viewModel.getBooks(null, pref.getValue())
     }
 
+    private fun progressBarIsDisplayed(isDisplayed : Boolean){
+        when(isDisplayed){
+            true -> {
+                binding.fabAddBook.isEnabled = false
+                binding.clBookProgressBar.visibility = View.VISIBLE
+            }
+            false -> {
+                binding.fabAddBook.isEnabled = true
+                binding.clBookProgressBar.visibility = View.GONE
+            }
+        }
+    }
 
+    private fun signOutAndRedirect(){
+        this.showToast("Ошибка авторизации")
+        pref.clearValue()
+        findNavController().navigate(R.id.loginFragment)
+    }
 
     private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun clickLongListener(item: GetBookResponse) {
-        Log.e("TAG", "${item.name}")
-    }
-
-    private fun checkPrefToken(){
-        if(pref.getValue() == null){
-            // Перекидываем на экран входа
-            pref.clearValue()
-            findNavController().navigate(R.id.loginFragment)
-        }
+        Log.e("TAG", item.name)
     }
 }

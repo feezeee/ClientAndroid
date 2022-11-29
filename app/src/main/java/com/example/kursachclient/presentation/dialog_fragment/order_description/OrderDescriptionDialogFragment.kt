@@ -1,4 +1,4 @@
-package com.example.kursachclient.presentation.dialog_fragment.basket
+package com.example.kursachclient.presentation.dialog_fragment.order_description
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,9 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.kursachclient.databinding.FragmentBasketDialogBinding
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import java.util.zip.Inflater
+import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
 
-class BasketDialogFragment(private val minValue: UInt, private val maxValue: UInt, private var item: GetBasketResponse) : DialogFragment() {
+class OrderDescriptionDialogFragment(private val minValue: UInt, private val maxValue: UInt, private var item: GetOrderItemResponse) : DialogFragment() {
 
     private lateinit var binding: FragmentBasketDialogBinding
 
@@ -35,8 +35,8 @@ class BasketDialogFragment(private val minValue: UInt, private val maxValue: UIn
         binding.btnBasketSetNumber.setOnClickListener {
             item.count = binding.npBasketNumberPicker.value.toUInt()
             val bundle = Bundle()
-            bundle.putSerializable("BASKET_ITEM", item)
-            setFragmentResult("REQUEST_FEEZE", bundle)
+            bundle.putSerializable("ORDER_DESCRIPTION_ITEM", item)
+            setFragmentResult("ORDER_DESCRIPTION", bundle)
             closeFragment()
         }
         binding.btnBasketCancel.setOnClickListener {

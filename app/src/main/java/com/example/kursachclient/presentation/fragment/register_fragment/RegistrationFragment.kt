@@ -34,7 +34,7 @@ class RegistrationFragment : Fragment() {
 
         viewModel.registrationLiveDate.observe(viewLifecycleOwner){
             if(it.isSuccess && it.getOrNull()!!){
-                findNavController().navigateUp();
+                findNavController().navigateUp()
 //                findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
             }
         }

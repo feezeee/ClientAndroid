@@ -77,27 +77,25 @@ class BasketAdapter(
                 true
             }
 
-            if (item.count > 0u && item.book.count > 0u) {
+            if (item.count > 0u) {
                 mainCardView.foreground = ColorDrawable(Color.TRANSPARENT)
                 noItemsTextView.visibility = View.GONE
                 linearLayoutClickable.setOnClickListener {
                     clickListener(item, position)
                 }
-            } else if (item.count == 0u && item.book.count > 0u) {
+            }
+            if (item.count == 0u) {
                 mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
                 linearLayoutClickable.setOnClickListener {
                     clickListener(item, position)
                 }
-            } else if (item.count == 0u && item.book.count == 0u) {
-                mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
-                noItemsTextView.visibility = View.VISIBLE
             }
 
             if (item.book.image == null) {
                 Glide.with(itemView).load(R.drawable.no_photos)
                     .placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
             } else {
-                Glide.with(itemView).load(RetrofitInstance.URL + item.book.image?.url)
+                Glide.with(itemView).load(RetrofitInstance.URL + item.book.image.url)
                     .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop()
                     .into(mainImage)
             }
@@ -106,7 +104,7 @@ class BasketAdapter(
 
         fun calculateFullPrice(list: List<GetBasketResponse>) : BigDecimal{
             var result : Double = 0.0
-            list.filter { it -> it.count > 0u && it.book.count > 0u }.forEach{ it ->  result += ( it.book.price * it.count.toDouble())}
+            list.filter { it -> it.count > 0u}.forEach{ it ->  result += ( it.book.price * it.count.toDouble())}
             return result.toBigDecimal().setScale(2, RoundingMode.UP)
         }
     }

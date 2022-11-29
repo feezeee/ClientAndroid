@@ -16,8 +16,8 @@ class SharedPreference(context: Context) {
         editor.apply()
     }
 
-    fun getValue(): String? {
-        return sharedPref.getString("API_KEY", null)
+    fun getValue(): String {
+        return sharedPref.getString("API_KEY", null) ?: ""
     }
 
     fun clearValue() {

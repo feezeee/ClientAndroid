@@ -1,35 +1,33 @@
-package com.example.kursachclient.presentation.fragment.basket_fragment
+package com.example.kursachclient.presentation.fragment.order_description_fragment
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kursachclient.domain.ApiService
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
+import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
+import com.example.kursachclient.presentation.fragment.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class BasketViewModel : ViewModel() {
-    val liveData: MutableLiveData<List<GetBasketResponse>> = MutableLiveData()
-    val liveDataShowToast: MutableLiveData<String> = MutableLiveData()
-    val liveDataSignOutAndRedirect: MutableLiveData<Unit> = MutableLiveData()
-    val liveDataNeedToNotifyItemChanged: MutableLiveData<Triple<Boolean, Int, GetBasketResponse>> =
+class OrderDescriptionViewModel : BaseViewModel<List<GetOrderItemResponse>>() {
+    val liveDataNeedToNotifyItemChanged: MutableLiveData<Triple<Boolean, Int, GetOrderItemResponse>> =
         MutableLiveData()
 
-    val retrofit = RetrofitInstance.getRetrofitInstance()
-    val apiService = retrofit.create(ApiService::class.java)
+    val liveDataNeedToChangeStatus: MutableLiveData<String> =
+        MutableLiveData()
 
-    fun getBasket(token: String) {
+    fun getOrderItems(orderId: Int, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 delay(1000)
-                var basketResponse = apiService.getBasket("bearer $token")
-                when (basketResponse.code()) {
+                var orderItemsResponse = apiService.getOrderItems(orderId, "bearer $token")
+                when (orderItemsResponse.code()) {
                     200 -> {
-                        liveData.postValue(basketResponse.body())
+                        liveData.postValue(orderItemsResponse.body())
+                    }
+                    204 -> {
+                        liveData.postValue(emptyList())
                     }
                     400 -> {
                         liveDataShowToast.postValue("Некорректный запрос")
@@ -55,54 +53,19 @@ class BasketViewModel : ViewModel() {
         }
     }
 
-    fun clearBasket(token: String) {
+    fun updateOrderItem(orderItem: UpdateOrderItemRequest, token: String, position: Int, orderDescription: GetOrderItemResponse){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 delay(1000)
-                var basketResponse = apiService.clearBasket("bearer $token")
+                var basketResponse = apiService.updateOrderItem(orderItem, "bearer $token")
                 when (basketResponse.code()) {
                     200 -> {
-                        liveDataShowToast.postValue("Корзина очищена")
-                        liveData.postValue(emptyList())
-                    }
-                    400 -> {
-                        liveDataShowToast.postValue("Некорректный запрос")
-                    }
-                    401 -> {
-                        liveDataSignOutAndRedirect.postValue(Unit)
-                    }
-                    403 -> {
-                        liveDataShowToast.postValue("У вас нет прав")
-                    }
-                    else -> {
-                        liveDataShowToast.postValue("Ошибка на сервере")
-                    }
-                }
-            } catch (ex: Exception) {
-                liveDataShowToast.postValue("Ошибка на сервере")
-                Log.e("TAG", ex.toString())
-            }
-        }
-    }
-
-    fun addOrRemoveItemFromBasket(
-        item: AddBookToBasketRequest,
-        token: String,
-        position: Int,
-        basketItem: GetBasketResponse
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                delay(1000)
-                var basketResponse = apiService.addBookToBasket(item, "bearer $token")
-                when (basketResponse.code()) {
-                    200 -> {
-                        liveDataShowToast.postValue("Корзина была обновлена")
+                        liveDataShowToast.postValue("Заказ был обновлен")
                         liveDataNeedToNotifyItemChanged.postValue(
                             Triple(
                                 true,
                                 position,
-                                basketItem
+                                orderDescription
                             )
                         )
                     }
@@ -112,7 +75,7 @@ class BasketViewModel : ViewModel() {
                             Triple(
                                 false,
                                 position,
-                                basketItem
+                                orderDescription
                             )
                         )
                     }
@@ -125,7 +88,7 @@ class BasketViewModel : ViewModel() {
                             Triple(
                                 false,
                                 position,
-                                basketItem
+                                orderDescription
                             )
                         )
                     }
@@ -135,7 +98,7 @@ class BasketViewModel : ViewModel() {
                             Triple(
                                 false,
                                 position,
-                                basketItem
+                                orderDescription
                             )
                         )
                     }
@@ -146,7 +109,7 @@ class BasketViewModel : ViewModel() {
                     Triple(
                         false,
                         position,
-                        basketItem
+                        orderDescription
                     )
                 )
                 Log.e("TAG", ex.toString())
@@ -154,34 +117,30 @@ class BasketViewModel : ViewModel() {
         }
     }
 
-    fun makeOrder(token: String) {
+    fun updateStatus(orderId: Int, status: String, token: String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 delay(1000)
-                var ordersResponse = apiService.makeOrder("bearer $token")
-                when (ordersResponse.code()) {
+                var basketResponse = apiService.updateStatus(orderId, status, "bearer $token")
+                when (basketResponse.code()) {
                     200 -> {
-                        liveDataShowToast.postValue("Заказ оформлен")
-                        getBasket(token)
+                        liveDataShowToast.postValue("Статус был обновлен")
+                        liveDataNeedToChangeStatus.postValue(status)
                     }
                     400 -> {
-                        getBasket(token)
                         liveDataShowToast.postValue("Некорректный запрос")
                     }
                     401 -> {
                         liveDataSignOutAndRedirect.postValue(Unit)
                     }
                     403 -> {
-                        getBasket(token)
                         liveDataShowToast.postValue("У вас нет прав")
                     }
                     else -> {
-                        getBasket(token)
                         liveDataShowToast.postValue("Ошибка на сервере")
                     }
                 }
             } catch (ex: Exception) {
-                getBasket(token)
                 liveDataShowToast.postValue("Ошибка на сервере")
                 Log.e("TAG", ex.toString())
             }

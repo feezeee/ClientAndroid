@@ -28,7 +28,7 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnLogout.setOnClickListener {
             pref.clearValue()
-            findNavController().navigate(R.id.action_settingFragment_to_loginFragment);
+            findNavController().navigate(R.id.action_settingFragment_to_loginFragment)
         }
     //        val backCallBack = object : OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {

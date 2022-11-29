@@ -9,8 +9,6 @@ data class AddBookRequest(
     var title: String,
     @SerializedName("price")
     var price : Double,
-    @SerializedName("count")
-    var count : UInt,
     @SerializedName("image_key")
     var imageId : Int?
 )

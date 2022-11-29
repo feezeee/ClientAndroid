@@ -1,6 +1,8 @@
 package com.example.kursachclient.presentation.fragment.book_fragment
 
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,19 +44,18 @@ class BookAdapter(
         private val longClickListener: (GetBookResponse) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         private val name: TextView = itemView.findViewById(R.id.tv_Name)
-        private val count: TextView = itemView.findViewById(R.id.tv_Count)
         private val price: TextView = itemView.findViewById(R.id.tv_Price)
         private val mainImage: ImageView = itemView.findViewById(R.id.iv_MainImage)
         fun bind(item: GetBookResponse) {
+            Log.e("KEK", Looper.myLooper().toString())
             name.text = item.name
-            count.text = item.count.toString()
             price.text = item.price.toString()
 
             if(item.image == null) {
                 Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
             }
             else{
-                Glide.with(itemView).load(RetrofitInstance.URL + item.image?.url)
+                Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
                     .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImage)
             }
 
@@ -64,9 +65,7 @@ class BookAdapter(
                     id = item.id,
                     name = item.name,
                     title = item.title,
-                    count = item.count,
                     price = item.price,
-                    imageId = item.imageId,
                     image = item.image
                 )
                 var bundle = Bundle()
@@ -81,6 +80,4 @@ class BookAdapter(
             }
         }
     }
-
-
 }

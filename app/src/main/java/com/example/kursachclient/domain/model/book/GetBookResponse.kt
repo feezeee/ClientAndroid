@@ -13,10 +13,6 @@ data class GetBookResponse (
     val title: String,
     @SerializedName("price")
     val price: Double,
-    @SerializedName("count")
-    val count: Int,
-    @SerializedName("image_key")
-    val imageId: Int?,
     @SerializedName("image")
     val image: ImageModelForGetBookResponse?
 ) : Serializable

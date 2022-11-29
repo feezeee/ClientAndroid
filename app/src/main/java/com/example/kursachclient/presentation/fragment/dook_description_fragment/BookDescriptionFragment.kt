@@ -13,7 +13,7 @@ import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookDescriptionBinding
 import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
+import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import java.lang.Exception
 
@@ -43,7 +43,7 @@ class BookDescriptionFragment : Fragment() {
             if(it.image != null)
             {
                 try {
-                    Glide.with(view).load(RetrofitInstance.URL + it.image?.url)
+                    Glide.with(view).load(RetrofitInstance.URL + it.image.url)
                         .placeholder(R.drawable.ic_baseline_image_search_24).into(binding.ivImage)
                 } catch (e: Exception) {
 
@@ -57,7 +57,7 @@ class BookDescriptionFragment : Fragment() {
                 }
             }
             binding.btnAddOrRemoveFromBasket.setOnClickListener{ btn ->
-                var book = AddOrRemoveBookFromBasketRequest(it.id, 1u)
+                var book = AddBookToBasketRequest(it.id, 1u)
                 viewModel.addOrRemoveFromBasket(book, pref.getValue().toString())
             }
         }

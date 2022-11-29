@@ -13,10 +13,6 @@ data class BookModelForGetBasketResponse(
     val title: String,
     @SerializedName("price")
     val price: Double,
-    @SerializedName("count")
-    val count: UInt,
-    @SerializedName("image_key")
-    val imageId: Int?,
     @SerializedName("image")
     val image: ImageModelForBookModel?
 ): Serializable

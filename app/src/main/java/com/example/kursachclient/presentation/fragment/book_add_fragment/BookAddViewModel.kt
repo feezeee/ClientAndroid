@@ -12,7 +12,7 @@ import com.example.kursachclient.domain.model.book.GetBookResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookAddViewModel() : ViewModel() {
+class BookAddViewModel : ViewModel() {
 
     val liveDataComplete: MutableLiveData<Boolean> = MutableLiveData()
     val liveDataToast: MutableLiveData<String> = MutableLiveData()

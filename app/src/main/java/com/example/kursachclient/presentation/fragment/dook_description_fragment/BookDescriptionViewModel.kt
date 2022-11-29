@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.basket.AddOrRemoveBookFromBasketRequest
+import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,10 +56,10 @@ class BookDescriptionViewModel : ViewModel() {
         }
     }
 
-    fun addOrRemoveFromBasket(bookItem : AddOrRemoveBookFromBasketRequest, token: String){
+    fun addOrRemoveFromBasket(bookItem : AddBookToBasketRequest, token: String){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                var bookResult = apiService.addOrDeleteBookFromBasket(bookItem, "bearer $token")
+                var bookResult = apiService.addBookToBasket(bookItem, "bearer $token")
                 when(bookResult.code()){
                     200 -> {
                         liveDataToast.postValue("Выполнено")
