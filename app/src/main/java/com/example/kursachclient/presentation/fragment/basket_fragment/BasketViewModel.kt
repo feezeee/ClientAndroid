@@ -19,6 +19,9 @@ class BasketViewModel : ViewModel() {
     val liveDataNeedToNotifyItemChanged: MutableLiveData<Triple<Boolean, Int, GetBasketResponse>> =
         MutableLiveData()
 
+    val liveDataNeedToNotifyItemRemove: MutableLiveData<Pair<Boolean, GetBasketResponse>> =
+        MutableLiveData()
+
     val retrofit = RetrofitInstance.getRetrofitInstance()
     val apiService = retrofit.create(ApiService::class.java)
 
@@ -183,6 +186,68 @@ class BasketViewModel : ViewModel() {
             } catch (ex: Exception) {
                 getBasket(token)
                 liveDataShowToast.postValue("Ошибка на сервере")
+                Log.e("TAG", ex.toString())
+            }
+        }
+    }
+
+    fun deleteItemFromBasket(
+        itemId: Int,
+        token: String,
+        item: GetBasketResponse){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                delay(1000)
+                var response = apiService.clearBasket(itemId, "bearer $token")
+                when (response.code()) {
+                    200 -> {
+                        liveDataShowToast.postValue("Корзина была обновлена")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                true,
+                                item
+                            )
+                        )
+                    }
+                    400 -> {
+                        liveDataShowToast.postValue("Некорректный запрос")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                    401 -> {
+                        liveDataSignOutAndRedirect.postValue(Unit)
+                    }
+                    403 -> {
+                        liveDataShowToast.postValue("У вас нет прав")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                    else -> {
+                        liveDataShowToast.postValue("Ошибка на сервере")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                }
+            } catch (ex: Exception) {
+                liveDataShowToast.postValue("Ошибка на сервере")
+                liveDataNeedToNotifyItemRemove.postValue(
+                    Pair(
+                        false,
+                        item
+                    )
+                )
                 Log.e("TAG", ex.toString())
             }
         }

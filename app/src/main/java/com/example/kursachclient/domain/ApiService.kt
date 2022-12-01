@@ -70,6 +70,9 @@ interface ApiService{
     @POST("api/order/make-order")
     suspend fun makeOrder(@Header("Authorization") token: String) : Response<Unit>
 
+    @DELETE("api/order/{key}")
+    suspend fun deleteOrder(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<Unit>
+
     //Order-item
     @GET("api/order-item/{key}")
     suspend fun getOrderItems(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<List<GetOrderItemResponse>>

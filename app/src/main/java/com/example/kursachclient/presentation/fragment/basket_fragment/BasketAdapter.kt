@@ -2,12 +2,9 @@ package com.example.kursachclient.presentation.fragment.basket_fragment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,10 +19,11 @@ import java.math.RoundingMode
 
 //private val longClickListener: (GetBasketResponse, Int) -> Unit
 class BasketAdapter(
-    private val basketList: List<GetBasketResponse>,
-    private val clickListener: (GetBasketResponse, Int) -> Unit,
+    private val basketList: MutableList<GetBasketResponse>,
+    private val countItemClickListener: (GetBasketResponse, Int) -> Unit,
     private val showFullPrice: (BigDecimal) -> Unit,
-    private val hideOrReviewBasketComplete: (BigDecimal) -> Unit
+    private val hideOrReviewBasketComplete: (BigDecimal) -> Unit,
+    private val itemLongClickListener: (GetBasketResponse) -> Unit
 ) : RecyclerView.Adapter<BasketAdapter.DescriptionCoinViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -35,6 +33,12 @@ class BasketAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_basket, parent, false)
         return DescriptionCoinViewHolder(view)
+    }
+
+    fun deleteItem(item: GetBasketResponse){
+        basketList.remove(item)
+        notifyDataSetChanged()
+//        notifyItemRemoved(position)
     }
 
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
@@ -61,7 +65,6 @@ class BasketAdapter(
         private val noItemsTextView: TextView =
             itemView.findViewById(R.id.tv_basket_static_no_items)
 
-
         fun bind(item: GetBasketResponse, position: Int, list: List<GetBasketResponse>) {
             var fullPrice = calculateFullPrice(list)
             hideOrReviewBasketComplete(fullPrice)
@@ -73,7 +76,7 @@ class BasketAdapter(
                 .setScale(2, RoundingMode.UP).toDouble().toString()
 
             mainCardView.setOnLongClickListener{
-                Log.d("KEK", "LongClickListener")
+                itemLongClickListener(item)
                 true
             }
 
@@ -81,13 +84,13 @@ class BasketAdapter(
                 mainCardView.foreground = ColorDrawable(Color.TRANSPARENT)
                 noItemsTextView.visibility = View.GONE
                 linearLayoutClickable.setOnClickListener {
-                    clickListener(item, position)
+                    countItemClickListener(item, position)
                 }
             }
             if (item.count == 0u) {
                 mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
                 linearLayoutClickable.setOnClickListener {
-                    clickListener(item, position)
+                    countItemClickListener(item, position)
                 }
             }
 

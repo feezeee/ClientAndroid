@@ -12,6 +12,7 @@ import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.sheet_dialog_fragment.basket.BasketSheetDialogFragment
 import java.math.BigDecimal
 
 
@@ -37,12 +38,13 @@ class BasketFragment : BaseFragment() {
         viewModel.liveData.observe(viewLifecycleOwner) {
             Log.e("TAG", it.toString())
             adapter = BasketAdapter(
-                it,
+                it as MutableList<GetBasketResponse>,
                 { basket, position ->
-                    clickListener(basket, position)
+                    countChangeClickListener(basket, position)
                 },
                 { coast -> setFullPrice(coast) },
-                { coast -> hideOrReviewBasketComplete(coast) })
+                { coast -> hideOrReviewBasketComplete(coast) },
+                { item -> itemLongClickListener(item) })
             binding.rvBasketItems.layoutManager = GridLayoutManager(context, 1)
             binding.rvBasketItems.adapter = adapter
             progressBarIsDisplayed(false)
@@ -56,9 +58,18 @@ class BasketFragment : BaseFragment() {
             signOutAndRedirect()
         }
 
-        viewModel.liveDataNeedToNotifyItemChanged.observe(viewLifecycleOwner){
-            if(it.first){
+        viewModel.liveDataNeedToNotifyItemChanged.observe(viewLifecycleOwner) {
+            if (it.first) {
                 adapter.notifyItemChanged(it.second, it.third)
+            }
+            progressBarIsDisplayed(false)
+        }
+
+        viewModel.liveDataNeedToNotifyItemRemove.observe(viewLifecycleOwner) {
+            if (it.first) {
+                adapter.deleteItem(it.second)
+//                adapter.notifyItemRemoved(it.second)
+//                adapter.notifyDataSetChanged()
             }
             progressBarIsDisplayed(false)
         }
@@ -77,7 +88,7 @@ class BasketFragment : BaseFragment() {
         viewModel.getBasket(pref.getValue())
     }
 
-    private fun clickListener(item: GetBasketResponse, position: Int) {
+    private fun countChangeClickListener(item: GetBasketResponse, position: Int) {
         var basketDialogFragment = BasketDialogFragment(0u, 10u, item)
 
         childFragmentManager.setFragmentResultListener(
@@ -95,6 +106,17 @@ class BasketFragment : BaseFragment() {
             }
         }
         basketDialogFragment.show(childFragmentManager, "kek")
+    }
+
+    private fun itemLongClickListener(item: GetBasketResponse) {
+        var basketSheetItem =
+            BasketSheetDialogFragment(viewModel, pref) { deleteItemClickListener(item) }
+        basketSheetItem.show(childFragmentManager, "FEEZE")
+    }
+
+    private fun deleteItemClickListener(item: GetBasketResponse) {
+        progressBarIsDisplayed(true)
+        viewModel.deleteItemFromBasket(item.book.id, pref.getValue(), item)
     }
 
     private fun setFullPrice(price: BigDecimal) {

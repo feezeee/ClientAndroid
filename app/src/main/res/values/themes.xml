@@ -18,4 +18,14 @@
         <item name="cornerRadius">100dp</item>
         <item name="background">@color/purple_200</item>
     </style>
+
+    <style name="Denis.CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Denis.CustomBottomSheetStyle</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="background">@color/white</item>
+    </style>
+
+    <style name="Denis.CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

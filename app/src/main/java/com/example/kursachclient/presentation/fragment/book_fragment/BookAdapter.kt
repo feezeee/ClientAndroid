@@ -17,7 +17,7 @@ import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment
-import java.lang.Exception
+import kotlin.Exception
 
 class BookAdapter(
     private val bookList: List<GetBookResponse>,
@@ -60,18 +60,23 @@ class BookAdapter(
             }
 
             itemView.setOnClickListener {
-                val favoriteFragment = BookDescriptionFragment()
-                var book = GetBookResponse(
-                    id = item.id,
-                    name = item.name,
-                    title = item.title,
-                    price = item.price,
-                    image = item.image
-                )
-                var bundle = Bundle()
-                bundle.putSerializable("book", book)
-                Navigation.findNavController(itemView)
-                    .navigate(R.id.action_bookFragment_to_bookDescriptionFragment, bundle)
+                try{
+                    val favoriteFragment = BookDescriptionFragment()
+                    var book = GetBookResponse(
+                        id = item.id,
+                        name = item.name,
+                        title = item.title,
+                        price = item.price,
+                        image = item.image
+                    )
+                    var bundle = Bundle()
+                    bundle.putSerializable("book", book)
+                    Navigation.findNavController(itemView)
+                        .navigate(R.id.action_bookFragment_to_bookDescriptionFragment, bundle)
+                }
+                catch (e: Exception){
+                    e.printStackTrace()
+                }
             }
 
             itemView.setOnLongClickListener {

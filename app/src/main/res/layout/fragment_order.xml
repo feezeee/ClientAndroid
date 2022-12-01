@@ -82,7 +82,7 @@
     </HorizontalScrollView>
     <androidx.recyclerview.widget.RecyclerView
         android:paddingHorizontal="10dp"
-        android:background="@drawable/rounded_recycler_view"
+        android:background="@drawable/rounded_top_shape"
         android:id="@+id/rv_order_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -99,6 +99,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
         android:background="@drawable/rounded_constraint_layout_for_progress_bar"
         android:translationZ="100dp">
         <ProgressBar

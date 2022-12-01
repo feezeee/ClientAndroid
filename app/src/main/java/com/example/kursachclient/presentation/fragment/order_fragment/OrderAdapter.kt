@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment
@@ -22,7 +23,8 @@ import java.lang.Exception
 import java.math.RoundingMode
 
 class OrderAdapter(
-    private val orderList: List<GetOrderResponse>
+    private val orderList: MutableList<GetOrderResponse>,
+    private val itemLongClickListener: (GetOrderResponse) -> Unit
 ) : RecyclerView.Adapter<OrderAdapter.DescriptionCoinViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -40,7 +42,13 @@ class OrderAdapter(
 
     override fun getItemCount(): Int = orderList.size
 
-    class DescriptionCoinViewHolder(
+    fun deleteItem(item: GetOrderResponse){
+        orderList.remove(item)
+        notifyDataSetChanged()
+//        notifyItemRemoved(position)
+    }
+
+    inner class DescriptionCoinViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         private val fullNameTextView: TextView = itemView.findViewById(R.id.tv_order_item_full_name)
@@ -60,6 +68,10 @@ class OrderAdapter(
                 bundle.putSerializable("order", item)
                 Navigation.findNavController(itemView)
                     .navigate(R.id.action_orderFragment_to_orderDescriptionFragment, bundle)
+            }
+            itemView.setOnLongClickListener {
+                itemLongClickListener(item)
+                true
             }
         }
     }
