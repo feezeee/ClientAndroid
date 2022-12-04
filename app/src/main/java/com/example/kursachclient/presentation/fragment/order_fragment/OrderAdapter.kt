@@ -5,21 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.kursachclient.R
-import com.example.kursachclient.domain.Book
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.order.GetOrderResponse
-import com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment
-import com.example.kursachclient.presentation.fragment.order_description_fragment.OrderDescriptionFragment
-import java.lang.Exception
 import java.math.RoundingMode
 
 class OrderAdapter(

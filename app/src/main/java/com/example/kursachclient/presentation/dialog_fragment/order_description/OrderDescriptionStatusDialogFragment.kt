@@ -15,7 +15,6 @@ class OrderDescriptionStatusDialogFragment(private var item: GetOrderResponse) :
 
     private lateinit var binding: FragmentOrderDescriptionDialogBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

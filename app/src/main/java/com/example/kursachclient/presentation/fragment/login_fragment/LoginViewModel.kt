@@ -4,14 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.ApiService
-import com.example.kursachclient.domain.AuthorizeModel
-import com.example.kursachclient.domain.TokenModel
+import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
+import com.example.kursachclient.domain.model.authorization.GetTokenRoleModel
 import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
-    val liveData: MutableLiveData<TokenModel> = MutableLiveData()
+    val liveData: MutableLiveData<GetTokenRoleModel> = MutableLiveData()
     val liveDataToast: MutableLiveData<String> = MutableLiveData()
     val retrofit = RetrofitInstance.getRetrofitInstance()
     val apiService = retrofit.create(ApiService::class.java)
@@ -19,7 +18,7 @@ class LoginViewModel : ViewModel() {
     fun login(login: String, password: String) {
         viewModelScope.launch {
             try {
-                val model = AuthorizeModel(login, password)
+                val model = PostAuthorizerModel(login, password)
                 val res = apiService.getToken(model)
                 if (res.code() == 200) {
                     if(res.body() != null)

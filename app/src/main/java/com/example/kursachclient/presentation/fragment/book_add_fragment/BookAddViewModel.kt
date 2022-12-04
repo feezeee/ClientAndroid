@@ -9,42 +9,37 @@ import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.fragment.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class BookAddViewModel : ViewModel() {
-
-    val liveDataComplete: MutableLiveData<Boolean> = MutableLiveData()
-    val liveDataToast: MutableLiveData<String> = MutableLiveData()
-    val liveDataExit: MutableLiveData<Boolean> = MutableLiveData()
-
-    val retrofit = RetrofitInstance.getRetrofitInstance()
-    val apiService = retrofit.create(ApiService::class.java)
+class BookAddViewModel : BaseViewModel<Unit>() {
 
     fun addBook(book: AddBookRequest, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            delay(1000)
             try {
-                var response = apiService.addBook("bearer $token", book)
+                val response = apiService.addBook(book, "bearer $token")
 
                 if (response.code() == 201) {
-                    liveDataToast.postValue("Книга была добавлена")
-                    liveDataComplete.postValue(true)
+                    liveDataShowToast.postValue("Книга была добавлена")
+                    liveData.postValue(Unit)
                 }
                 if (response.code() == 400) {
-                    liveDataToast.postValue("Некорректный запрос")
+                    liveDataShowToast.postValue("Некорректный запрос")
                 }
                 if (response.code() == 401) {
-                    liveDataToast.postValue("Ошибка авторизации")
+                    liveDataShowToast.postValue("Ошибка авторизации")
                     // Делаем разлогин
-                    liveDataExit.postValue(true)
+                    liveDataSignOutAndRedirect.postValue(Unit)
                 }
                 if (response.code() == 403) {
-                    liveDataToast.postValue("У вас нет прав")
+                    liveDataShowToast.postValue("У вас нет прав")
                 }
             } catch (ex: Exception) {
                 Log.e("TAG", ex.toString())
-                liveDataToast.postValue("Какие-то проблемы с сервером")
-
+                liveDataShowToast.postValue("Ошибка на сервере")
             }
         }
     }

@@ -1,8 +1,9 @@
-package com.example.kursachclient.domain
+package com.example.kursachclient.domain.model.registration
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class RegisterModel(
+data class PostRegisterModel(
     @SerializedName("first_name")
     var firstName: String,
     @SerializedName("last_name")
@@ -13,4 +14,4 @@ data class RegisterModel(
     var login: String,
     @SerializedName("password")
     var password: String
-)
+) : Serializable

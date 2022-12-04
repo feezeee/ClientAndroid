@@ -11,12 +11,11 @@ import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentLoginBinding
 import com.example.kursachclient.presentation.MainActivity
+import com.example.kursachclient.presentation.fragment.BaseFragment
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
     lateinit var binding: FragmentLoginBinding
-
     val viewModel = LoginViewModel()
-    lateinit var pref: SharedPreference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,11 +24,7 @@ class LoginFragment : Fragment() {
     ): View? {
         pref = SharedPreference(requireContext())
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-
-        // Проверка залогинен ли чел
-        if (pref.getValue() == null) {
-            (activity as? MainActivity)?.hideBottomNav()
-        }
+        (activity as? MainActivity)?.hideBottomNav()
         return binding.root
     }
 
@@ -48,14 +43,10 @@ class LoginFragment : Fragment() {
         viewModel.liveDataToast.observe(viewLifecycleOwner){
             showToast(it)
         }
-        if(pref.getValue() != null){
-            // Проверка действительности токена
+        var token = pref.getValue()
+        if(token.isNotEmpty()){
             (activity as? MainActivity)?.displayBottomNav()
             findNavController().navigate(R.id.bookFragment)
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }

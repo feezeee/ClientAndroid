@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">KursachClient</string>
+
+    <string name="delete_item_from_basket">Вы уверены, что хотите удалить товар из корзины?</string>
+    <string name="delete_order">Вы уверены, что хотите удалить заказ?</string>
+    <string name="delete_book">Вы уверены, что хотите удалить книгу?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+
+    <string name="lorem">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</string>
+
+    <string name="book_item_price">%.2f р.</string>
+    <string name="static_price">Цена: \u0020</string>
+    <string name="back">Назад</string>
+    <string name="add_book">Добавить книгу</string>
+    <string name="book_name">Название</string>
+    <string name="write_book_name">Введите название</string>
+    <string name="description">Описание</string>
+    <string name="write_book_description">Введите описание</string>
+    <string name="price_without_colon">Цена</string>
+    <string name="write_book_price">Введите цену</string>
+    <string name="default_price">0.00</string>
+    <string name="order">Заказ</string>
+    <string name="basket">Корзина</string>
+    <string name="book_find">Поиск книг</string>
+    <string name="book_information">Подробности</string>
+    <string name="add_to_basket">Добавить в корзину</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

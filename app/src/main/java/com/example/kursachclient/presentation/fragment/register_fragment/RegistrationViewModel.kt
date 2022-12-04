@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.*
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.registration.PostRegisterModel
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel : ViewModel() {
@@ -22,7 +23,7 @@ class RegistrationViewModel : ViewModel() {
     ) {
         viewModelScope.launch {
             try {
-                var model = RegisterModel(firstName, lastName, phoneNumber, login, password)
+                var model = PostRegisterModel(firstName, lastName, phoneNumber, login, password)
                 var isSuccessfully = apiService.register(model)
 //                registrationLiveDate.postValue(Result.success(isSuccessfully))
             }

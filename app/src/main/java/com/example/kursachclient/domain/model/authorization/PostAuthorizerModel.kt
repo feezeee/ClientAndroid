@@ -1,8 +1,8 @@
-package com.example.kursachclient.domain
+package com.example.kursachclient.domain.model.authorization
 
 import com.google.gson.annotations.SerializedName
 
-data class AuthorizeModel (
+data class PostAuthorizerModel (
     @SerializedName("login")
     var login: String,
     @SerializedName("password")

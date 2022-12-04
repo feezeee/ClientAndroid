@@ -1,26 +1,26 @@
 package com.example.kursachclient.presentation.fragment.book_fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kursachclient.R
-import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.book.GetBookResponse
-import com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment
+import com.example.kursachclient.presentation.fragment.book_description_fragment.BookDescriptionFragment
+import java.math.RoundingMode
 import kotlin.Exception
 
 class BookAdapter(
-    private val bookList: List<GetBookResponse>,
+    private val bookList: MutableList<GetBookResponse>,
     private val longClickListener: (GetBookResponse) -> Unit
 ) : RecyclerView.Adapter<BookAdapter.DescriptionCoinViewHolder>() {
 
@@ -33,30 +33,41 @@ class BookAdapter(
         return DescriptionCoinViewHolder(view, longClickListener)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun deleteItem(item: GetBookResponse){
+        bookList.remove(item)
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
         holder.bind(bookList[position])
     }
 
     override fun getItemCount(): Int = bookList.size
 
-    class DescriptionCoinViewHolder(
+    inner class DescriptionCoinViewHolder(
         itemView: View,
         private val longClickListener: (GetBookResponse) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
-        private val name: TextView = itemView.findViewById(R.id.tv_Name)
-        private val price: TextView = itemView.findViewById(R.id.tv_Price)
-        private val mainImage: ImageView = itemView.findViewById(R.id.iv_MainImage)
+
+        private val nameTextView: TextView = itemView.findViewById(R.id.tv_book_item_name)
+        private val priceTextView: TextView = itemView.findViewById(R.id.tv_book_item_price)
+        private val mainImageView: ImageView = itemView.findViewById(R.id.iv_book_item_main_image)
+
         fun bind(item: GetBookResponse) {
             Log.e("KEK", Looper.myLooper().toString())
-            name.text = item.name
-            price.text = item.price.toString()
+            nameTextView.text = item.name
+            var resourcesString = itemView.resources.getString(R.string.book_item_price)
+            var priceStr = String.format(resourcesString, item.price.toBigDecimal()
+                .setScale(2, RoundingMode.UP))
+            priceTextView.text = priceStr
 
             if(item.image == null) {
-                Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
+                Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImageView)
             }
             else{
                 Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
-                    .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImage)
+                    .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImageView)
             }
 
             itemView.setOnClickListener {

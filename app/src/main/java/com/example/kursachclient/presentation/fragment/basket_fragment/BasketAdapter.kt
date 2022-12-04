@@ -1,5 +1,6 @@
 package com.example.kursachclient.presentation.fragment.basket_fragment
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -35,10 +36,14 @@ class BasketAdapter(
         return DescriptionCoinViewHolder(view)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun deleteItem(item: GetBasketResponse){
         basketList.remove(item)
         notifyDataSetChanged()
-//        notifyItemRemoved(position)
+
+        val fullPrice = calculateFullPrice(basketList)
+        hideOrReviewBasketComplete(fullPrice)
+        showFullPrice(fullPrice)
     }
 
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
@@ -46,6 +51,12 @@ class BasketAdapter(
     }
 
     override fun getItemCount(): Int = basketList.size
+
+    private fun calculateFullPrice(list: List<GetBasketResponse>) : BigDecimal{
+        var result : Double = 0.0
+        list.filter { it -> it.count > 0u}.forEach{ it ->  result += ( it.book.price * it.count.toDouble())}
+        return result.toBigDecimal().setScale(2, RoundingMode.UP)
+    }
 
     inner class DescriptionCoinViewHolder(
         itemView: View
@@ -66,7 +77,7 @@ class BasketAdapter(
             itemView.findViewById(R.id.tv_basket_static_no_items)
 
         fun bind(item: GetBasketResponse, position: Int, list: List<GetBasketResponse>) {
-            var fullPrice = calculateFullPrice(list)
+            val fullPrice = calculateFullPrice(list)
             hideOrReviewBasketComplete(fullPrice)
             showFullPrice(fullPrice)
             name.text = item.book.name
@@ -103,12 +114,6 @@ class BasketAdapter(
                     .into(mainImage)
             }
 
-        }
-
-        fun calculateFullPrice(list: List<GetBasketResponse>) : BigDecimal{
-            var result : Double = 0.0
-            list.filter { it -> it.count > 0u}.forEach{ it ->  result += ( it.book.price * it.count.toDouble())}
-            return result.toBigDecimal().setScale(2, RoundingMode.UP)
         }
     }
 }

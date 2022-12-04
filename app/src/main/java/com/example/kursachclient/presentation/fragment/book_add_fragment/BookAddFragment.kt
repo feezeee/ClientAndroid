@@ -1,6 +1,8 @@
 package com.example.kursachclient.presentation.fragment.book_add_fragment
 
 import android.os.Bundle
+import android.os.PatternMatcher
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +20,14 @@ import com.example.kursachclient.databinding.FragmentBookDescriptionBinding
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.fragment.BaseFragment
 import com.example.kursachclient.presentation.fragment.book_fragment.BookAdapter
 import com.example.kursachclient.presentation.fragment.book_fragment.BookViewModel
 import java.lang.Exception
+import java.math.RoundingMode
 
-class BookAddFragment : Fragment() {
+class BookAddFragment : BaseFragment() {
     lateinit var binding: FragmentBookAddBinding
-    lateinit var pref: SharedPreference
     lateinit var viewModel: BookAddViewModel
 
     override fun onCreateView(
@@ -32,51 +35,82 @@ class BookAddFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        pref = SharedPreference(requireContext())
         viewModel = BookAddViewModel()
+        pref = SharedPreference(requireContext())
         binding = FragmentBookAddBinding.inflate(inflater, container, false)
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.liveDataToast.observe(viewLifecycleOwner) {
-            Log.e("TAG", it.toString())
-            showToast(it)
-        }
-        viewModel.liveDataExit.observe(viewLifecycleOwner) {
-            if (it == true) {
-                // Делаем разлогин
-//                pref.clearValue()
-            }
-        }
-        viewModel.liveDataComplete.observe(viewLifecycleOwner) {
-            if (it == true) {
-                // Делаем разлогин
-                findNavController().navigateUp()
-            }
-        }
-        binding.btnAddBook.setOnClickListener {
-            // Делаем валидацию
 
-            var book =
+        viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
+            showToast(message)
+        }
+
+        viewModel.liveDataSignOutAndRedirect.observe(viewLifecycleOwner) {
+            signOutAndRedirect()
+        }
+        viewModel.liveData.observe(viewLifecycleOwner) {
+            progressBarIsDisplayed(false)
+            findNavController().popBackStack()
+        }
+
+        binding.ivBookAddBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.ivBookAddAdd.setOnClickListener {
+            progressBarIsDisplayed(true)
+            if (binding.etBookAddBookName.text.isEmpty()) {
+                binding.etBookAddBookName.error = "Не может быть пустым"
+                progressBarIsDisplayed(false)
+                return@setOnClickListener
+            }
+            if (binding.etBookAddBookTitle.text.isEmpty()) {
+                binding.etBookAddBookTitle.error = "Не может быть пустым"
+                progressBarIsDisplayed(false)
+                return@setOnClickListener
+            }
+
+            val priceRegex = "^\\d+.\\d{1,2}".toRegex()
+            val resultPrice = priceRegex.matchEntire(binding.etBookAddBookPrice.text.toString())
+            if (resultPrice == null) {
+                binding.etBookAddBookPrice.error = "Формат *.00"
+                progressBarIsDisplayed(false)
+                return@setOnClickListener
+            }
+            val resultPriceDecimal = resultPrice.value.toBigDecimal().setScale(2, RoundingMode.UP)
+            if (resultPriceDecimal.toString() == "0.00") {
+                binding.etBookAddBookPrice.error = "Минимальная цена 0.01"
+                progressBarIsDisplayed(false)
+                return@setOnClickListener
+            }
+
+            val book =
                 AddBookRequest(
-                    binding.etName.text.toString(),
-                    binding.etTitle.text.toString(),
-                    binding.etPrice.text.toString().toDouble(),
+                    binding.etBookAddBookName.text.toString(),
+                    binding.etBookAddBookTitle.text.toString(),
+                    resultPriceDecimal.toDouble(),
                     null
                 )
-            viewModel.addBook(book, pref.getValue().toString())
-            try {
-
-            }
-            catch (ex: Exception){
-
-            }
+            viewModel.addBook(book, pref.getValue())
         }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    private fun progressBarIsDisplayed(isDisplayed: Boolean) {
+        when (isDisplayed) {
+            true -> {
+                binding.ivBookAddBack.isEnabled = false
+                binding.ivBookAddAdd.isEnabled = false
+                binding.ivBookAddMainImage.isEnabled = false
+                binding.clBookAddProgressBar.visibility = View.VISIBLE
+            }
+            false -> {
+                binding.ivBookAddBack.isEnabled = true
+                binding.ivBookAddAdd.isEnabled = true
+                binding.ivBookAddMainImage.isEnabled = true
+                binding.clBookAddProgressBar.visibility = View.GONE
+            }
+        }
     }
 }

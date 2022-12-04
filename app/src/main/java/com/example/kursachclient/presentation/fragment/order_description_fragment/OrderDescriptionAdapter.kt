@@ -1,24 +1,13 @@
 package com.example.kursachclient.presentation.fragment.order_description_fragment
 
-import android.os.Bundle
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.kursachclient.R
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
-import com.example.kursachclient.presentation.fragment.book_fragment.BookAdapter
-import com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment
 import java.math.BigDecimal
 import java.math.RoundingMode
 

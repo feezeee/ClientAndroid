@@ -14,7 +14,6 @@ open class BaseFragment : Fragment() {
 
     protected fun signOutAndRedirect() {
         try{
-            this.showToast("Ошибка авторизации")
             pref.clearValue()
             findNavController().navigate(R.id.loginFragment)
         }

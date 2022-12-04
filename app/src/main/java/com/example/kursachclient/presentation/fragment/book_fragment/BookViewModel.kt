@@ -8,16 +8,14 @@ import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.Book
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.fragment.BaseViewModel
 import kotlinx.coroutines.*
 
-class BookViewModel : ViewModel() {
-    val liveData: MutableLiveData<List<GetBookResponse>> = MutableLiveData()
-    val liveDataShowToast: MutableLiveData<String> = MutableLiveData()
-    val liveDataSignOutAndRedirect: MutableLiveData<Any> = MutableLiveData()
-
-    private val retrofit = RetrofitInstance.getRetrofitInstance()
-    private val apiService: ApiService = retrofit.create(ApiService::class.java)
+class BookViewModel : BaseViewModel<MutableList<GetBookResponse>>() {
+    val liveDataNeedToNotifyItemRemove: MutableLiveData<Pair<Boolean, GetBookResponse>> =
+        MutableLiveData()
 
     fun getBooks(filterName: String?, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -30,26 +28,87 @@ class BookViewModel : ViewModel() {
                     }
                     400 -> {
                         liveDataShowToast.postValue("Некорректный запрос")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBookResponse>().toMutableList())
                     }
                     401 -> {
-                        liveDataSignOutAndRedirect.postValue(true)
+                        liveDataSignOutAndRedirect.postValue(Unit)
                     }
                     403 -> {
                         liveDataShowToast.postValue("У вас нет прав")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBookResponse>().toMutableList())
                     }
                     else -> {
                         liveDataShowToast.postValue("Ошибка на сервере")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBookResponse>().toMutableList())
                     }
                 }
             } catch (ex: Exception) {
                 liveDataShowToast.postValue("Ошибка на сервере")
-                liveData.postValue(emptyList())
+                liveData.postValue(emptyList<GetBookResponse>().toMutableList())
                 Log.e("TAG", ex.toString())
             }
         }
     }
 
+    fun deleteBook(
+        bookId: Int,
+        token: String,
+        item: GetBookResponse){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                delay(1000)
+                var response = apiService.deleteBook(bookId, "bearer $token")
+                when (response.code()) {
+                    200 -> {
+                        liveDataShowToast.postValue("Книга была удалена")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                true,
+                                item
+                            )
+                        )
+                    }
+                    400 -> {
+                        liveDataShowToast.postValue("Некорректный запрос")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                    401 -> {
+                        liveDataSignOutAndRedirect.postValue(Unit)
+                    }
+                    403 -> {
+                        liveDataShowToast.postValue("У вас нет прав")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                    else -> {
+                        liveDataShowToast.postValue("Ошибка на сервере")
+                        liveDataNeedToNotifyItemRemove.postValue(
+                            Pair(
+                                false,
+                                item
+                            )
+                        )
+                    }
+                }
+            } catch (ex: Exception) {
+                liveDataShowToast.postValue("Ошибка на сервере")
+                liveDataNeedToNotifyItemRemove.postValue(
+                    Pair(
+                        false,
+                        item
+                    )
+                )
+                Log.e("TAG", ex.toString())
+            }
+        }
+    }
 }

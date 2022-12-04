@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/bookDescriptionFragment"
-        android:name="com.example.kursachclient.presentation.fragment.dook_description_fragment.BookDescriptionFragment"
+        android:name="com.example.kursachclient.presentation.fragment.book_description_fragment.BookDescriptionFragment"
         android:label="BookDescriptionFragment" />
     <fragment
         android:id="@+id/bookFragment"
@@ -38,22 +38,15 @@
         android:label="HomeFragment">
 
         <action
-            android:id="@+id/action_bookFragment_to_bookDescriptionFragment"
-
-            app:destination="@id/bookDescriptionFragment"
-            app:launchSingleTop="true"
-
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/nav_graph"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_bookFragment_to_bookAddFragment"
             app:destination="@id/bookAddFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_bookFragment_to_bookDescriptionFragment"
+            app:destination="@id/bookDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookAddFragment"

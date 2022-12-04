@@ -8,22 +8,21 @@ import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import com.example.kursachclient.domain.model.book.GetBookResponse
+import com.example.kursachclient.presentation.fragment.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class BasketViewModel : ViewModel() {
-    val liveData: MutableLiveData<List<GetBasketResponse>> = MutableLiveData()
-    val liveDataShowToast: MutableLiveData<String> = MutableLiveData()
-    val liveDataSignOutAndRedirect: MutableLiveData<Unit> = MutableLiveData()
+class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
     val liveDataNeedToNotifyItemChanged: MutableLiveData<Triple<Boolean, Int, GetBasketResponse>> =
         MutableLiveData()
 
     val liveDataNeedToNotifyItemRemove: MutableLiveData<Pair<Boolean, GetBasketResponse>> =
         MutableLiveData()
 
-    val retrofit = RetrofitInstance.getRetrofitInstance()
-    val apiService = retrofit.create(ApiService::class.java)
+    val liveDataNeedToNotifyBasketEmpty: MutableLiveData<Unit> =
+        MutableLiveData()
 
     fun getBasket(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,23 +35,23 @@ class BasketViewModel : ViewModel() {
                     }
                     400 -> {
                         liveDataShowToast.postValue("Некорректный запрос")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBasketResponse>().toMutableList())
                     }
                     401 -> {
                         liveDataSignOutAndRedirect.postValue(Unit)
                     }
                     403 -> {
                         liveDataShowToast.postValue("У вас нет прав")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBasketResponse>().toMutableList())
                     }
                     else -> {
                         liveDataShowToast.postValue("Ошибка на сервере")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBasketResponse>().toMutableList())
                     }
                 }
             } catch (ex: Exception) {
                 liveDataShowToast.postValue("Ошибка на сервере")
-                liveData.postValue(emptyList())
+                liveData.postValue(emptyList<GetBasketResponse>().toMutableList())
                 Log.e("TAG", ex.toString())
             }
         }
@@ -66,7 +65,8 @@ class BasketViewModel : ViewModel() {
                 when (basketResponse.code()) {
                     200 -> {
                         liveDataShowToast.postValue("Корзина очищена")
-                        liveData.postValue(emptyList())
+                        liveData.postValue(emptyList<GetBasketResponse>().toMutableList())
+                        liveDataNeedToNotifyBasketEmpty.postValue(Unit)
                     }
                     400 -> {
                         liveDataShowToast.postValue("Некорректный запрос")

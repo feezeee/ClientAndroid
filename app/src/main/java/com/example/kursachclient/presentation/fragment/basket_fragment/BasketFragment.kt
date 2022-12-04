@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBasketBinding
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
 import com.example.kursachclient.presentation.fragment.BaseFragment
-import com.example.kursachclient.presentation.sheet_dialog_fragment.basket.BasketSheetDialogFragment
+import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
 import java.math.BigDecimal
 
 
@@ -65,11 +66,14 @@ class BasketFragment : BaseFragment() {
             progressBarIsDisplayed(false)
         }
 
+        viewModel.liveDataNeedToNotifyBasketEmpty.observe(viewLifecycleOwner){
+            setFullPrice(0.00.toBigDecimal())
+            hideOrReviewBasketComplete(0.00.toBigDecimal())
+        }
+
         viewModel.liveDataNeedToNotifyItemRemove.observe(viewLifecycleOwner) {
             if (it.first) {
                 adapter.deleteItem(it.second)
-//                adapter.notifyItemRemoved(it.second)
-//                adapter.notifyDataSetChanged()
             }
             progressBarIsDisplayed(false)
         }
@@ -84,7 +88,6 @@ class BasketFragment : BaseFragment() {
             viewModel.makeOrder(pref.getValue())
         }
 
-        // Добавить проверку на pref
         viewModel.getBasket(pref.getValue())
     }
 
@@ -109,8 +112,8 @@ class BasketFragment : BaseFragment() {
     }
 
     private fun itemLongClickListener(item: GetBasketResponse) {
-        var basketSheetItem =
-            BasketSheetDialogFragment(viewModel, pref) { deleteItemClickListener(item) }
+        val mainText = resources.getString(R.string.delete_item_from_basket)
+        val basketSheetItem = DeleteItemSheetDialogFragment(mainText) { deleteItemClickListener(item) }
         basketSheetItem.show(childFragmentManager, "FEEZE")
     }
 

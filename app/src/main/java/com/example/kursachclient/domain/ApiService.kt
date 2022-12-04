@@ -1,5 +1,7 @@
 package com.example.kursachclient.domain
 
+import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
+import com.example.kursachclient.domain.model.authorization.GetTokenRoleModel
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.AddBookRequest
@@ -8,34 +10,35 @@ import com.example.kursachclient.domain.model.book.UpdateBookRequest
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
 import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
+import com.example.kursachclient.domain.model.registration.PostRegisterModel
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService{
 
-    @GET("api/Book")
-    suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String): Response<List<GetBookResponse>>
+    @GET("api/book")
+    suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String): Response<MutableList<GetBookResponse>>
 
     @GET("api/book/{key}")
     suspend fun getBookByKey(@Path("key") key: Int, @Header("Authorization") token: String): Response<GetBookResponse?>
 
-    @POST("api/Book")
-    suspend fun addBook(@Header("Authorization") token: String, @Body book: AddBookRequest): Response<Any>
+    @POST("api/book")
+    suspend fun addBook(@Body book: AddBookRequest, @Header("Authorization") token: String): Response<Unit>
 
-    @PUT("api/Book")
-    suspend fun updateBook(@Header("Authorization") token: String, @Body book: UpdateBookRequest): Response<Any>
+    @PUT("api/book")
+    suspend fun updateBook(@Body book: UpdateBookRequest, @Header("Authorization") token: String): Response<Unit>
 
-    @DELETE("api/Book")
-    suspend fun deleteBook(@Header("Authorization") token: String, @Query("key") id: Int): Response<Any>
+    @DELETE("api/book/{key}")
+    suspend fun deleteBook(@Path("key") id: Int, @Header("Authorization") token: String): Response<Unit>
 
 
 
-    @POST("api/Authorization")
-    suspend fun getToken(@Body model: AuthorizeModel): Response<TokenModel>
+    @POST("api/authorization")
+    suspend fun getToken(@Body model: PostAuthorizerModel): Response<GetTokenRoleModel>
 
     @Headers("Content-Type: application/json")
     @POST("api/Registration")
-    suspend fun register(@Body model: RegisterModel) : Response<Boolean>
+    suspend fun register(@Body model: PostRegisterModel) : Response<Boolean>
 
     @GET("api/login-is-free/check")
     suspend fun loginIsFree(login:String) : Response<Any>
@@ -45,7 +48,7 @@ interface ApiService{
 
     //Basket
     @GET("api/basket")
-    suspend fun getBasket(@Header("Authorization") token: String) : Response<List<GetBasketResponse>>
+    suspend fun getBasket(@Header("Authorization") token: String) : Response<MutableList<GetBasketResponse>>
 
     @POST("api/basket")
     suspend fun addBookToBasket(@Body bookItem: AddBookToBasketRequest, @Header("Authorization") token: String) : Response<Unit>
@@ -59,7 +62,7 @@ interface ApiService{
 
     //Order
     @GET("api/order")
-    suspend fun getOrders(@Header("Authorization") token: String) : Response<List<GetOrderResponse>>
+    suspend fun getOrders(@Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
     @PATCH("api/order")
     suspend fun updateStatus(
@@ -75,7 +78,7 @@ interface ApiService{
 
     //Order-item
     @GET("api/order-item/{key}")
-    suspend fun getOrderItems(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<List<GetOrderItemResponse>>
+    suspend fun getOrderItems(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<MutableList<GetOrderItemResponse>>
 
     @PUT("api/order-item")
     suspend fun updateOrderItem(@Body orderItem: UpdateOrderItemRequest, @Header("Authorization") token: String) : Response<Unit>

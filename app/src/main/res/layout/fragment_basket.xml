@@ -3,14 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/gradient_for_basket"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="-40dp"
-        app:layout_constraintBottom_toTopOf="@id/rv_basket_items"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color">
     <RelativeLayout
         android:id="@+id/rl_basket_header"
         android:layout_width="match_parent"
@@ -34,13 +28,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="0dp"
-            android:text="Корзина"
-            android:textColor="#367385"
+            android:text="@string/basket"
+            android:textColor="#403947"
             android:textSize="10pt"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_basket_clear_basket"
-            android:backgroundTint="#367385"
+            android:backgroundTint="#403947"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_width="24dp"
@@ -66,14 +60,14 @@
             android:text="0.00"
             android:textStyle="bold"
             android:textSize="14pt"
-            android:textColor="#204F51"/>
+            android:textColor="#403947"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" р."
             android:textStyle="bold"
             android:textSize="14pt"
-            android:textColor="#204F51"/>
+            android:textColor="#403947"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:paddingHorizontal="10dp"
@@ -84,8 +78,7 @@
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_basket_full_price"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="51dp" />
+        android:overScrollMode="never"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_basket_progress_bar"
         android:layout_width="0dp"
@@ -118,6 +111,7 @@
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:tooltipText="Оформить заказ">
+        android:tooltipText="Оформить заказ"
+        tools:targetApi="o">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

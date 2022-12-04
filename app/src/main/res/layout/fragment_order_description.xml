@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_for_basket">
+    android:background="@color/background_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_order_description_progress_bar"
@@ -55,9 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:contentDescription="Назад"
+                android:contentDescription="@string/back"
                 android:rotation="180"
-                android:src="@drawable/ic_baseline_arrow_forward_24" />
+                android:src="@drawable/ic_baseline_arrow_forward_24"
+                app:tint="#403947" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,10 +66,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="0dp"
-                android:text="Заказ"
+                android:text="@string/order"
                 android:textColor="#403947"
-                android:textSize="10pt"
-                android:textStyle="bold" />
+                android:textSize="10pt" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,7 +217,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_top_shape"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cv_order_description_user_card_view">
+        app:layout_constraintTop_toBottomOf="@id/cv_order_description_user_card_view"
+        android:overScrollMode="never">
 
     </androidx.recyclerview.widget.RecyclerView>
 

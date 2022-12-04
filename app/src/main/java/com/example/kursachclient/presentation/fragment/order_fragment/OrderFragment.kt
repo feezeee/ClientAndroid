@@ -15,12 +15,9 @@ import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookBinding
 import com.example.kursachclient.databinding.FragmentOrderBinding
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
-import com.example.kursachclient.presentation.sheet_dialog_fragment.basket.BasketSheetDialogFragment
-import com.example.kursachclient.presentation.sheet_dialog_fragment.order.OrderSheetDialogFragment
+import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
 
 class OrderFragment : BaseFragment() {
     lateinit var binding: FragmentOrderBinding
@@ -88,8 +85,8 @@ class OrderFragment : BaseFragment() {
     }
 
     private fun itemLongClickListener(item: GetOrderResponse) {
-        var orderSheetItem =
-            OrderSheetDialogFragment(viewModel, pref) { deleteItemClickListener(item) }
+        val mainText = resources.getString(R.string.delete_order)
+        var orderSheetItem = DeleteItemSheetDialogFragment(mainText) { deleteItemClickListener(item) }
         orderSheetItem.show(childFragmentManager, "FEEZE")
     }
 }

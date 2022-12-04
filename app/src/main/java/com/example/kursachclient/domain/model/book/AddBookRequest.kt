@@ -1,6 +1,7 @@
 package com.example.kursachclient.domain.model.book
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class AddBookRequest(
     @SerializedName("name")
@@ -11,4 +12,4 @@ data class AddBookRequest(
     var price : Double,
     @SerializedName("image_key")
     var imageId : Int?
-)
+) : Serializable
