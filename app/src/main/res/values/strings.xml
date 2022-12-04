@@ -35,4 +35,10 @@
     <string name="person_phone_number">Номер телефона</string>
     <string name="make_registration">Зарегестрироваться</string>
     <string name="orders">Заказы</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="registration_date">Дата регистрации аккаунта</string>
+    <string name="profile">Профиль</string>
+    <string name="sign_out">Выйти с аккаунта</string>
+    <string name="home">Главная</string>
+    <string name="books">Книги</string>
 </resources>

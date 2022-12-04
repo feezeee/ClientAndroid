@@ -5,9 +5,9 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.example.kursachclient.presentation.fragment.setting_fragment.SettingFragment"
-        android:label="SettingFragment" >
+        android:id="@+id/profileFragment"
+        android:name="com.example.kursachclient.presentation.fragment.profile_fragment.ProfileFragment"
+        android:label="ProfileFragment">
         <action
             android:id="@+id/action_settingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

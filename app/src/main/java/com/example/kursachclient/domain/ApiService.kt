@@ -12,6 +12,7 @@ import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
 import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
 import com.example.kursachclient.domain.model.registration.PostRegisterModel
+import com.example.kursachclient.domain.model.user_profile.GetUserProfileResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -44,11 +45,6 @@ interface ApiService{
     @GET("api/login-is-free/check")
     suspend fun loginIsFree(@Query(value = "login", encoded = true) login:String) : Response<GetLoginStatus>
 
-
-
-    @GET("api/user")
-    suspend fun getUser(token:String): Any
-
     //Basket
     @GET("api/basket")
     suspend fun getBasket(@Header("Authorization") token: String) : Response<MutableList<GetBasketResponse>>
@@ -62,6 +58,9 @@ interface ApiService{
     @DELETE("api/basket/clear")
     suspend fun clearBasket(@Header("Authorization") token: String) : Response<Unit>
 
+    //UserProfile
+    @GET("api/user/profile")
+    suspend fun getUserProfile(@Header("Authorization") token: String) : Response<GetUserProfileResponse>
 
     //Order
     @GET("api/order")
