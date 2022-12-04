@@ -32,11 +32,21 @@ class DeleteItemSheetDialogFragment(
     override fun onStart() {
 
         binding.btnBottomSheetDeleteRemoveNo.setOnClickListener{
-            dialog?.dismiss()
+            try {
+                dialog?.dismiss()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
         binding.btnBottomSheetDeleteRemoveYes.setOnClickListener {
-            dialog?.dismiss()
-            deleteItemClickListener()
+            try {
+                dialog?.dismiss()
+                deleteItemClickListener()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
         super.onStart()
     }

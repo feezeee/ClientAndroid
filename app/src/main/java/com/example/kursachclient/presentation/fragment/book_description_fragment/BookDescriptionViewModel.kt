@@ -57,14 +57,17 @@ class BookDescriptionViewModel : BaseViewModel<GetBookResponse>() {
 
     fun addOrRemoveFromBasket(bookItem : AddBookToBasketRequest, token: String){
         viewModelScope.launch(Dispatchers.IO){
+            delay(1000)
             try {
-                var bookResult = apiService.addBookToBasket(bookItem, "bearer $token")
+                val bookResult = apiService.addBookToBasket(bookItem, "bearer $token")
                 when(bookResult.code()){
                     200 -> {
                         liveDataShowToast.postValue("Выполнено")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                     }
                     400 -> {
                         liveDataShowToast.postValue("Некорректный запрос")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                     }
                     401 -> {
                         liveDataShowToast.postValue("Ошибка авторизации")
@@ -73,14 +76,17 @@ class BookDescriptionViewModel : BaseViewModel<GetBookResponse>() {
                     }
                     403 -> {
                         liveDataShowToast.postValue("У вас нет прав")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                     }
                     else -> {
                         liveDataShowToast.postValue("Ошибка на сервере")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                     }
                 }
             }
             catch (ex: Exception){
                 liveDataShowToast.postValue("Ошибка на сервере")
+                liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                 Log.e("TAG", ex.message.toString())
             }
         }

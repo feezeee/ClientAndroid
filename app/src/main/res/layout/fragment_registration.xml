@@ -1,79 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/my_gradient">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="40dp">
+        android:id="@+id/cl_registration_progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rounded_top_bottom_shape_gray"
+        android:clickable="true"
+        android:focusable="true"
+        android:translationZ="100dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/cv_registration_card_view"
+        app:layout_constraintBottom_toBottomOf="@id/cv_registration_card_view"
+        app:layout_constraintEnd_toEndOf="@id/cv_registration_card_view"
+        app:layout_constraintStart_toStartOf="@id/cv_registration_card_view">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_FirstName"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="20dp"
-            android:hint="Имя"
-            android:inputType="text"
+        <ProgressBar
+            android:id="@+id/pb_registration_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_LastName"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="20dp"
-            android:hint="Фамилия"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_FirstName" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_PhoneNumber"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="20dp"
-            android:hint="Номер телефона"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_LastName" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_Login"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="20dp"
-            android:hint="Логин"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_PhoneNumber" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_Password"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_marginVertical="20dp"
-            android:hint="Пароль"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_Login" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/b_Register"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Зарегестрироваться"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_registration_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="50dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <RelativeLayout
+            android:id="@+id/rl_registration_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="30dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_registration_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/back"
+                android:rotation="180"
+                android:src="@drawable/ic_baseline_arrow_forward_24"
+                app:tint="#403947" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="0dp"
+                android:text="@string/registration"
+                android:textColor="#403947"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_registration_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/profile_card"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:contentPadding="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_registration_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_registration_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/person_first_name"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:autofillHints="name" />
+
+            <EditText
+                android:id="@+id/et_registration_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/person_last_name"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:autofillHints="name" />
+
+            <EditText
+                android:id="@+id/et_registration_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/person_phone_number"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:autofillHints="phone" />
+
+            <EditText
+                android:id="@+id/et_registration_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/login"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:autofillHints="emailAddress" />
+
+            <EditText
+                android:id="@+id/et_registration_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:autofillHints="password" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_registration_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#2E6732"
+        android:text="@string/make_registration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

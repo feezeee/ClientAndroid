@@ -7,35 +7,32 @@ import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
 import com.example.kursachclient.domain.model.authorization.GetTokenRoleModel
 import com.example.kursachclient.domain.instance.RetrofitInstance
+import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.BaseViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
-    val liveData: MutableLiveData<GetTokenRoleModel> = MutableLiveData()
-    val liveDataToast: MutableLiveData<String> = MutableLiveData()
-    val retrofit = RetrofitInstance.getRetrofitInstance()
-    val apiService = retrofit.create(ApiService::class.java)
+class LoginViewModel : BaseViewModel<GetTokenRoleModel>() {
+    val liveDataNeedToNotifySomeProblemWithServer: MutableLiveData<Unit> =
+        MutableLiveData()
 
     fun login(login: String, password: String) {
         viewModelScope.launch {
+            delay(1000)
             try {
                 val model = PostAuthorizerModel(login, password)
                 val res = apiService.getToken(model)
                 if (res.code() == 200) {
-                    if(res.body() != null)
-                    {
-                        liveDataToast.postValue("Вход выполнен успешно")
-                        liveData.postValue(res.body())
-                    }
-                    else {
-                        liveDataToast.postValue("Какие-то проблемы с токеном")
-                    }
-                }
-                else {
-                    liveDataToast.postValue("Проблемы со входом")
+                    liveDataShowToast.postValue("Вход выполнен успешно")
+                    liveData.postValue(res.body())
+                } else {
+                    liveDataShowToast.postValue("Проблемы со входом")
+                    liveDataNeedToNotifySomeProblemWithServer.postValue(Unit)
                 }
 
             } catch (e: Exception) {
-                liveDataToast.postValue("Проблемы со входом")
+                liveDataShowToast.postValue("Проблемы со входом")
+                liveDataNeedToNotifySomeProblemWithServer.postValue(Unit)
                 e.printStackTrace()
             }
 

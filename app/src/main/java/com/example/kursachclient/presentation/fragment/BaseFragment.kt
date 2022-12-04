@@ -1,7 +1,5 @@
 package com.example.kursachclient.presentation.fragment
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment

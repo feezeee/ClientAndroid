@@ -18,11 +18,11 @@ class OrderViewModel : BaseViewModel<List<GetOrderResponse>>() {
     val liveDataNeedToNotifyItemRemove: MutableLiveData<Pair<Boolean, GetOrderResponse>> =
         MutableLiveData()
 
-    fun getOrders(token: String) {
+    fun getOrders(filterName: String?, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 delay(1000)
-                var ordersResponse = apiService.getOrders("bearer $token")
+                var ordersResponse = apiService.getOrders(filterName,"bearer $token")
                 when (ordersResponse.code()) {
                     200 -> {
                         liveData.postValue(ordersResponse.body())

@@ -35,7 +35,6 @@ class OrderAdapter(
     fun deleteItem(item: GetOrderResponse){
         orderList.remove(item)
         notifyDataSetChanged()
-//        notifyItemRemoved(position)
     }
 
     inner class DescriptionCoinViewHolder(
@@ -49,19 +48,35 @@ class OrderAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(item: GetOrderResponse) {
-            fullNameTextView.text = "${item.firstName} ${item.lastName}"
-            phoneNumberTextView.text = item.phoneNumber
-            fullPriceTextView.text =
-                item.fullPrice.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
-            itemView.setOnClickListener {
-                var bundle = Bundle()
-                bundle.putSerializable("order", item)
-                Navigation.findNavController(itemView)
-                    .navigate(R.id.action_orderFragment_to_orderDescriptionFragment, bundle)
+            try{
+                fullNameTextView.text = "${item.firstName} ${item.lastName}"
+                phoneNumberTextView.text = item.phoneNumber
+                fullPriceTextView.text =
+                    item.fullPrice.toBigDecimal().setScale(2, RoundingMode.UP).toString()
+                itemView.setOnClickListener {
+                    try {
+                        val bundle = Bundle()
+                        bundle.putSerializable("order", item)
+                        Navigation.findNavController(itemView)
+                            .navigate(R.id.action_orderFragment_to_orderDescriptionFragment, bundle)
+                    }
+                    catch (e: Exception){
+                        e.printStackTrace()
+                    }
+
+                }
+                itemView.setOnLongClickListener {
+                    try {
+                        itemLongClickListener(item)
+                    }
+                    catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                    true
+                }
             }
-            itemView.setOnLongClickListener {
-                itemLongClickListener(item)
-                true
+            catch (e: Exception){
+                e.printStackTrace()
             }
         }
     }

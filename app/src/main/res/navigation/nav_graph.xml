@@ -68,4 +68,20 @@
         android:id="@+id/orderDescriptionFragment"
         android:name="com.example.kursachclient.presentation.fragment.order_description_fragment.OrderDescriptionFragment"
         android:label="OrderDescriptionFragment" />
+    <dialog
+        android:id="@+id/orderDescriptionStatusDialogFragment"
+        android:name="com.example.kursachclient.presentation.dialog_fragment.order_description.OrderDescriptionStatusDialogFragment"
+        android:label="OrderDescriptionStatusDialogFragment" />
+    <dialog
+        android:id="@+id/deleteItemSheetDialogFragment"
+        android:name="com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment"
+        android:label="DeleteItemSheetDialogFragment" />
+    <dialog
+        android:id="@+id/orderDescriptionDialogFragment"
+        android:name="com.example.kursachclient.presentation.dialog_fragment.order_description.OrderDescriptionDialogFragment"
+        android:label="OrderDescriptionDialogFragment" />
+    <dialog
+        android:id="@+id/basketDialogFragment"
+        android:name="com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment"
+        android:label="BasketDialogFragment" />
 </navigation>

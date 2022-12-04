@@ -1,27 +1,21 @@
 package com.example.kursachclient.presentation.fragment.book_fragment
 
+import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookBinding
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
-import com.example.kursachclient.presentation.MainActivity
 import com.example.kursachclient.presentation.fragment.BaseFragment
 import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 
 class BookFragment : BaseFragment() {
     lateinit var binding: FragmentBookBinding
@@ -41,90 +35,151 @@ class BookFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         progressBarIsDisplayed(true)
-//        val backCallback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                Snackbar.make(
-//                    binding.root,
-//                    "Do you want to exit?", Snackbar.LENGTH_SHORT
-//                )
-//                    .setAction("Exit") {
-//                        activity?.finish()
-//                    }.show()
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
 
         viewModel.liveData.observe(viewLifecycleOwner) { getBookResponseList ->
-            Log.e("TAG", getBookResponseList.toString())
-            Log.e("KEK", Looper.myLooper().toString())
-            adapter = BookAdapter(getBookResponseList) { itemLongClickListener(it) }
-            binding.rvBookBooks.layoutManager = GridLayoutManager(context, 1)
-            binding.rvBookBooks.adapter = adapter
-            progressBarIsDisplayed(false)
+            try{
+                adapter = BookAdapter(pref.getRole(), getBookResponseList) { itemLongClickListener(it) }
+                binding.rvBookBooks.layoutManager = GridLayoutManager(context, 1)
+                binding.rvBookBooks.adapter = adapter
+                progressBarIsDisplayed(false)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
-            showToast(message)
+            try{
+                showToast(message)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         viewModel.liveDataSignOutAndRedirect.observe(viewLifecycleOwner) {
-            signOutAndRedirect()
+            try{
+                signOutAndRedirect()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         binding.fabAddBook.setOnClickListener {
-            findNavController().navigate(R.id.action_bookFragment_to_bookAddFragment)
+            try{
+                findNavController().navigate(R.id.action_bookFragment_to_bookAddFragment)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         viewModel.liveDataNeedToNotifyItemRemove.observe(viewLifecycleOwner) {
-            if (it.first) {
-                adapter.deleteItem(it.second)
+            try{
+                if (it.first) {
+                    adapter.deleteItem(it.second)
+                }
+                progressBarIsDisplayed(false)
             }
-            progressBarIsDisplayed(false)
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         binding.svBookSearchBook.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
-                progressBarIsDisplayed(true)
-                Log.d("TAG", "onQueryTextSubmit: ")
-                viewModel.getBooks(if(query.isNullOrEmpty()) null else query, pref.getValue())
-                binding.svBookSearchBook.clearFocus()
-                return true
+                try{
+                    progressBarIsDisplayed(true)
+                    Log.d("TAG", "onQueryTextSubmit: ")
+                    viewModel.getBooks(if(query.isNullOrEmpty()) null else query, pref.getToken())
+                    binding.svBookSearchBook.clearFocus()
+                    return true
+                }
+                catch (e: Exception){
+                    e.printStackTrace()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()){
-                    progressBarIsDisplayed(true)
-                    viewModel.getBooks(null, pref.getValue())
+                try{
+                    if (newText.isNullOrEmpty()){
+                        progressBarIsDisplayed(true)
+                        viewModel.getBooks(null, pref.getToken())
+                    }
+                    return true
                 }
-                return true
+                catch (e: Exception){
+                    e.printStackTrace()
+                    return true
+                }
             }
 
         })
 
-        viewModel.getBooks(null, pref.getValue())
+        viewModel.getBooks(null, pref.getToken())
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        try{
+            when(pref.getRole().lowercase()){
+                "user" -> {
+                    binding.fabAddBook.visibility = View.GONE
+                }
+                "admin" -> {
+                    binding.fabAddBook.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.fabAddBook.visibility = View.VISIBLE
+                }
+            }
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun progressBarIsDisplayed(isDisplayed : Boolean){
-        when(isDisplayed){
-            true -> {
-                binding.fabAddBook.isEnabled = false
-                binding.clBookProgressBar.visibility = View.VISIBLE
+        try{
+            when(isDisplayed){
+                true -> {
+                    binding.fabAddBook.isEnabled = false
+                    binding.clBookProgressBar.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.fabAddBook.isEnabled = true
+                    binding.clBookProgressBar.visibility = View.GONE
+                }
             }
-            false -> {
-                binding.fabAddBook.isEnabled = true
-                binding.clBookProgressBar.visibility = View.GONE
-            }
+        }
+        catch (e: Exception){
+            e.printStackTrace()
         }
     }
 
     private fun itemLongClickListener(item: GetBookResponse) {
-        val mainText = resources.getString(R.string.delete_book)
-        val basketSheetItem = DeleteItemSheetDialogFragment(mainText) { deleteItemClickListener(item) }
-        basketSheetItem.show(childFragmentManager, "FEEZE")
+        try{
+            val mainText = resources.getString(R.string.delete_book)
+            val basketSheetItem = DeleteItemSheetDialogFragment(mainText) { deleteItemClickListener(item) }
+            basketSheetItem.show(childFragmentManager, "FEEZE")
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+
     }
 
     private fun deleteItemClickListener(item: GetBookResponse) {
-        progressBarIsDisplayed(true)
-        viewModel.deleteBook(item.id, pref.getValue(), item)
+        try{
+            progressBarIsDisplayed(true)
+            viewModel.deleteBook(item.id, pref.getToken(), item)
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }

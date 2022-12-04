@@ -10,7 +10,7 @@
         android:title="Корзина" />
     <item
         android:id="@+id/orderFragment"
-        android:icon="@drawable/ic_baseline_settings_24"
+        android:icon="@drawable/ic_baseline_shopping_bag_24"
         android:title="Заказы" />
     <item
         android:id="@+id/settingFragment"

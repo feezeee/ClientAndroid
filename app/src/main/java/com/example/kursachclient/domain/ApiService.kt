@@ -7,6 +7,7 @@ import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
+import com.example.kursachclient.domain.model.login_is_free.GetLoginStatus
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
 import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
@@ -38,10 +39,12 @@ interface ApiService{
 
     @Headers("Content-Type: application/json")
     @POST("api/Registration")
-    suspend fun register(@Body model: PostRegisterModel) : Response<Boolean>
+    suspend fun register(@Body model: PostRegisterModel) : Response<Unit>
 
     @GET("api/login-is-free/check")
-    suspend fun loginIsFree(login:String) : Response<Any>
+    suspend fun loginIsFree(@Query(value = "login", encoded = true) login:String) : Response<GetLoginStatus>
+
+
 
     @GET("api/user")
     suspend fun getUser(token:String): Any
@@ -62,7 +65,7 @@ interface ApiService{
 
     //Order
     @GET("api/order")
-    suspend fun getOrders(@Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
+    suspend fun getOrders(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
     @PATCH("api/order")
     suspend fun updateStatus(
@@ -82,6 +85,9 @@ interface ApiService{
 
     @PUT("api/order-item")
     suspend fun updateOrderItem(@Body orderItem: UpdateOrderItemRequest, @Header("Authorization") token: String) : Response<Unit>
+
+    @DELETE("api/order-item/{key}")
+    suspend fun deleteOrderItem(@Path("key") itemId: Int, @Header("Authorization") token: String) : Response<Unit>
 
 
 }

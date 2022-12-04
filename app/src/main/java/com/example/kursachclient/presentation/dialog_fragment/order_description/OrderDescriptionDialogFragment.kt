@@ -33,18 +33,34 @@ class OrderDescriptionDialogFragment(private val minValue: UInt, private val max
         binding.npBasketNumberPicker.maxValue = maxValue.toInt()
         binding.npBasketNumberPicker.value = item.count.toInt()
         binding.btnBasketSetNumber.setOnClickListener {
-            item.count = binding.npBasketNumberPicker.value.toUInt()
-            val bundle = Bundle()
-            bundle.putSerializable("ORDER_DESCRIPTION_ITEM", item)
-            setFragmentResult("ORDER_DESCRIPTION", bundle)
-            closeFragment()
+            try{
+                item.count = binding.npBasketNumberPicker.value.toUInt()
+                val bundle = Bundle()
+                bundle.putSerializable("ORDER_DESCRIPTION_ITEM", item)
+                setFragmentResult("ORDER_DESCRIPTION", bundle)
+                closeFragment()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+
         }
         binding.btnBasketCancel.setOnClickListener {
-            closeFragment()
+            try {
+                closeFragment()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
     }
 
     private fun closeFragment() {
-        this.dismiss()
+        try {
+            this.dismiss()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }

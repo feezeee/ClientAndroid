@@ -3,14 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <View
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/gradient_for_basket"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="-40dp"
-        app:layout_constraintBottom_toTopOf="@id/rv_order_items"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color">
+
     <RelativeLayout
         android:id="@+id/rl_order_header"
         android:layout_width="match_parent"
@@ -25,8 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="0dp"
-            android:text="Заказы"
-            android:textColor="#367385"
+            android:text="@string/orders"
+            android:textColor="#403947"
             android:textSize="10pt"/>
     </RelativeLayout>
     <HorizontalScrollView
@@ -42,9 +37,10 @@
         android:scrollbars="none"
         android:overScrollMode="never">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <RadioGroup
+                android:id="@+id/rg_order_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -54,28 +50,35 @@
                     android:id="@+id/rb_order_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#403947"
+                    android:checked="true"
                     android:text="Все"/>
                 <RadioButton
                     android:id="@+id/rb_order_in_process"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
+                    android:textColor="#403947"
                     android:text="В обработке"/>
 
                 <RadioButton
                     android:id="@+id/rb_order_wait_client"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#403947"
                     android:text="Ожидает клиента" />
 
                 <RadioButton
                     android:id="@+id/rb_order_complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#403947"
                     android:text="Выполнен"/>
                 <RadioButton
                     android:id="@+id/rb_order_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="#403947"
                     android:text="Отменен"/>
             </RadioGroup>
         </LinearLayout>

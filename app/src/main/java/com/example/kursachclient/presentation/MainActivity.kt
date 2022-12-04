@@ -1,24 +1,20 @@
 package com.example.kursachclient.presentation
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.core.view.forEach
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kursachclient.R
-import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,11 +37,46 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNav() {
-        binding.bottomNavigation.visibility = View.GONE
+        try {
+            binding.bottomNavigation.visibility = View.GONE
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     fun displayBottomNav() {
-        binding.bottomNavigation.visibility = View.VISIBLE
+        try {
+            binding.bottomNavigation.visibility = View.VISIBLE
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
+
+    fun hideOrderMenu() {
+        try {
+            val menu: Menu = binding.bottomNavigation.menu
+            val target: MenuItem = menu.findItem(R.id.orderFragment)
+            target.isVisible = false
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    fun showOrderMenu() {
+        try {
+            val menu: Menu = binding.bottomNavigation.menu
+            val target: MenuItem = menu.findItem(R.id.orderFragment)
+            target.isVisible = true
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+
+
 
 }

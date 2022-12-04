@@ -36,7 +36,7 @@
                     android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Денис Скурат"
+                    android:text=""
                     android:textSize="10pt"
                     android:textColor="#383E42"
                     android:maxLines="1"
@@ -47,7 +47,7 @@
                     android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="+375 29 830 63 61"
+                    android:text=""
                     android:textSize="6pt"
                     android:textColor="#7F8F9A"
                     android:maxLines="1"
@@ -63,7 +63,7 @@
                 android:layout_width="0dp"
                 android:textAlignment="textEnd"
                 android:layout_height="wrap_content"
-                android:text="999999"
+                android:text="0.00"
                 android:textSize="10pt"
                 android:textColor="#383E42"
                 android:maxLines="1"
@@ -76,6 +76,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginRight="20dp"
+                android:textSize="10pt"
+                android:textColor="#383E42"
                 android:text=" р."/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

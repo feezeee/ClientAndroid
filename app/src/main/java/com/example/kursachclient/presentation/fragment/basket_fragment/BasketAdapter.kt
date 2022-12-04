@@ -76,44 +76,55 @@ class BasketAdapter(
         private val noItemsTextView: TextView =
             itemView.findViewById(R.id.tv_basket_static_no_items)
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: GetBasketResponse, position: Int, list: List<GetBasketResponse>) {
-            val fullPrice = calculateFullPrice(list)
-            hideOrReviewBasketComplete(fullPrice)
-            showFullPrice(fullPrice)
-            name.text = item.book.name
-            count.text = item.count.toString()
-            price.text = item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toDouble().toString()
-            resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal()
-                .setScale(2, RoundingMode.UP).toDouble().toString()
+            try {
+                val fullPrice = calculateFullPrice(list)
+                hideOrReviewBasketComplete(fullPrice)
+                showFullPrice(fullPrice)
+                name.text = item.book.name
+                count.text = item.count.toString()
+                price.text = item.book.price.toBigDecimal().setScale(2, RoundingMode.UP).toString()
+                resultPriceItem.text = (item.count.toDouble() * item.book.price).toBigDecimal()
+                    .setScale(2, RoundingMode.UP).toString()
 
-            mainCardView.setOnLongClickListener{
-                itemLongClickListener(item)
-                true
-            }
+                mainCardView.setOnLongClickListener{
+                    try {
+                        itemLongClickListener(item)
+                        true
+                    }
+                    catch (e: Exception) {
+                        e.printStackTrace()
+                        true
+                    }
+                }
 
-            if (item.count > 0u) {
-                mainCardView.foreground = ColorDrawable(Color.TRANSPARENT)
-                noItemsTextView.visibility = View.GONE
-                linearLayoutClickable.setOnClickListener {
-                    countItemClickListener(item, position)
+                if (item.count > 0u) {
+                    mainCardView.foreground = ColorDrawable(Color.TRANSPARENT)
+                    noItemsTextView.visibility = View.GONE
+                    linearLayoutClickable.setOnClickListener {
+                        countItemClickListener(item, position)
+                    }
+                }
+                if (item.count == 0u) {
+                    mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
+                    linearLayoutClickable.setOnClickListener {
+                        countItemClickListener(item, position)
+                    }
+                }
+
+                if (item.book.image == null) {
+                    Glide.with(itemView).load(R.drawable.no_photos)
+                        .placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
+                } else {
+                    Glide.with(itemView).load(RetrofitInstance.URL + item.book.image.url)
+                        .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop()
+                        .into(mainImage)
                 }
             }
-            if (item.count == 0u) {
-                mainCardView.foreground = ColorDrawable(Color.parseColor("#BBffffff"))
-                linearLayoutClickable.setOnClickListener {
-                    countItemClickListener(item, position)
-                }
+            catch (e: Exception){
+                e.printStackTrace()
             }
-
-            if (item.book.image == null) {
-                Glide.with(itemView).load(R.drawable.no_photos)
-                    .placeholder(R.drawable.ic_baseline_image_search_24).into(mainImage)
-            } else {
-                Glide.with(itemView).load(RetrofitInstance.URL + item.book.image.url)
-                    .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop()
-                    .into(mainImage)
-            }
-
         }
     }
 }

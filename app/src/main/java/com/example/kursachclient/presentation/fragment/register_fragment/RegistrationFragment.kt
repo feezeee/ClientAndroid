@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.kursachclient.databinding.FragmentRegistrationBinding
+import com.example.kursachclient.domain.model.registration.PostRegisterModel
+import com.example.kursachclient.presentation.fragment.BaseFragment
 
-class RegistrationFragment : Fragment() {
+class RegistrationFragment : BaseFragment() {
     lateinit var binding: FragmentRegistrationBinding
 
     val viewModel = RegistrationViewModel()
@@ -23,20 +25,123 @@ class RegistrationFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.bRegister.setOnClickListener {
-            viewModel.register(
-                binding.etFirstName.text.toString(),
-                binding.etLastName.text.toString(),
-                binding.etPhoneNumber.text.toString(),
-                binding.etLogin.text.toString(),
-                binding.etPassword.text.toString())
+        binding.btnRegistrationRegister.setOnClickListener {
+            try{
+                progressBarIsDisplayed(true)
+                val firstName = binding.etRegistrationFirstName.text.toString()
+                val lastName = binding.etRegistrationLastName.text.toString()
+
+                if (firstName.isEmpty()) {
+                    binding.etRegistrationFirstName.error = "Не может быть пустым"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+                if (lastName.isEmpty()) {
+                    binding.etRegistrationLastName.error = "Не может быть пустым"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+
+                val phoneNumberRegex = "^\\+\\d{3}\\s\\(\\d{2}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}".toRegex()
+                val resultNumber =
+                    phoneNumberRegex.matchEntire(binding.etRegistrationPhoneNumber.text.toString())
+                if (resultNumber == null) {
+                    binding.etRegistrationPhoneNumber.error = "Формат +*** (**) *** ** **"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+                val login = binding.etRegistrationLogin.text.toString()
+                if (login.isEmpty()) {
+                    binding.etRegistrationLogin.error = "Не может быть пустым"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login).matches()) {
+                    binding.etRegistrationLogin.error = "Некорректный логин"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+                val password = binding.etRegistrationPassword.text.toString()
+                if (password.isEmpty()) {
+                    binding.etRegistrationPassword.error = "Не может быть пустым"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+                if (password.length < 8) {
+                    binding.etRegistrationPassword.error = "Минимальная длина пароля 8 символов"
+                    progressBarIsDisplayed(false)
+                    return@setOnClickListener
+                }
+
+                val registerModel =
+                    PostRegisterModel(firstName, lastName, resultNumber.value, login, password)
+
+                viewModel.register(registerModel)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
-        viewModel.registrationLiveDate.observe(viewLifecycleOwner){
-            if(it.isSuccess && it.getOrNull()!!){
-                findNavController().navigateUp()
-//                findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
+        binding.ivRegistrationBack.setOnClickListener {
+            try {
+                findNavController().popBackStack()
             }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+
+        }
+
+        viewModel.liveData.observe(viewLifecycleOwner) {
+            try {
+                if(it == true){
+                    findNavController().popBackStack()
+                }
+                else{
+                    progressBarIsDisplayed(false)
+                }
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+
+        viewModel.liveDataNeedToNotifyLoginIsNotFree.observe(viewLifecycleOwner) {
+            try {
+                progressBarIsDisplayed(false)
+                binding.etRegistrationLogin.error = "Этот логин уже занят"
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+
+        viewModel.liveDataShowToast.observe(viewLifecycleOwner) {
+            try {
+                showToast(it)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun progressBarIsDisplayed(isDisplayed: Boolean) {
+        try {
+            when (isDisplayed) {
+                true -> {
+                    binding.btnRegistrationRegister.isEnabled = false
+                    binding.clRegistrationProgressBar.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.btnRegistrationRegister.isEnabled = true
+                    binding.clRegistrationProgressBar.visibility = View.GONE
+                }
+            }
+        }
+        catch (e: Exception){
+            e.printStackTrace()
         }
     }
 }

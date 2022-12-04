@@ -20,6 +20,7 @@ import java.math.RoundingMode
 import kotlin.Exception
 
 class BookAdapter(
+    private val role: String,
     private val bookList: MutableList<GetBookResponse>,
     private val longClickListener: (GetBookResponse) -> Unit
 ) : RecyclerView.Adapter<BookAdapter.DescriptionCoinViewHolder>() {
@@ -55,44 +56,73 @@ class BookAdapter(
         private val mainImageView: ImageView = itemView.findViewById(R.id.iv_book_item_main_image)
 
         fun bind(item: GetBookResponse) {
-            Log.e("KEK", Looper.myLooper().toString())
-            nameTextView.text = item.name
-            var resourcesString = itemView.resources.getString(R.string.book_item_price)
-            var priceStr = String.format(resourcesString, item.price.toBigDecimal()
-                .setScale(2, RoundingMode.UP))
-            priceTextView.text = priceStr
+            try{
+                nameTextView.text = item.name
+                val priceStr = item.price.toBigDecimal()
+                    .setScale(2, RoundingMode.UP).toString()
+                priceTextView.text = priceStr
 
-            if(item.image == null) {
-                Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImageView)
-            }
-            else{
-                Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
-                    .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImageView)
-            }
-
-            itemView.setOnClickListener {
-                try{
-                    val favoriteFragment = BookDescriptionFragment()
-                    var book = GetBookResponse(
-                        id = item.id,
-                        name = item.name,
-                        title = item.title,
-                        price = item.price,
-                        image = item.image
-                    )
-                    var bundle = Bundle()
-                    bundle.putSerializable("book", book)
-                    Navigation.findNavController(itemView)
-                        .navigate(R.id.action_bookFragment_to_bookDescriptionFragment, bundle)
+                if(item.image == null) {
+                    Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImageView)
                 }
-                catch (e: Exception){
-                    e.printStackTrace()
+                else{
+                    Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
+                        .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImageView)
                 }
-            }
 
-            itemView.setOnLongClickListener {
-                longClickListener(item)
-                true
+                itemView.setOnClickListener {
+                    try{
+                        val book = GetBookResponse(
+                            id = item.id,
+                            name = item.name,
+                            title = item.title,
+                            price = item.price,
+                            image = item.image
+                        )
+                        val bundle = Bundle()
+                        bundle.putSerializable("book", book)
+                        Navigation.findNavController(itemView)
+                            .navigate(R.id.action_bookFragment_to_bookDescriptionFragment, bundle)
+                    }
+                    catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                }
+
+                when(role.lowercase()){
+                    "user" -> {
+
+                    }
+                    "admin" -> {
+                        itemView.setOnLongClickListener {
+                            try {
+                                longClickListener(item)
+                            }
+                            catch (e: Exception)
+                            {
+                                e.printStackTrace()
+                            }
+                            true
+                        }
+                    }
+                    else -> {
+                        itemView.setOnLongClickListener {
+                            try {
+                                longClickListener(item)
+                            }
+                            catch (e: Exception)
+                            {
+                                e.printStackTrace()
+                            }
+                            true
+                        }
+                    }
+                }
+
+
+            }
+            catch (e: Exception){
+                e.printStackTrace()
             }
         }
     }

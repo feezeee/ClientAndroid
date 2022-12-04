@@ -46,35 +46,49 @@ class OrderDescriptionStatusDialogFragment(private var item: GetOrderResponse) :
 
 
         binding.btnOrderDescriptionDialogSetOrderStatus.setOnClickListener {
+            try {
+                if(binding.rbOrderDescriptionDialogInProgress.isChecked){
+                    item.status = "В обработке"
+                }
+                else if(binding.rbOrderDescriptionDialogWaitClient.isChecked){
+                    item.status = "Ожидает клиента"
+                }
+                else if(binding.rbOrderDescriptionDialogComplete.isChecked){
+                    item.status = "Выполнен"
+                }
+                else if(binding.rbOrderDescriptionDialogCanceled.isChecked){
+                    item.status = "Отменен"
+                }
+                else {
+                    closeFragment()
+                    return@setOnClickListener
+                }
 
-            if(binding.rbOrderDescriptionDialogInProgress.isChecked){
-               item.status = "В обработке"
-            }
-            else if(binding.rbOrderDescriptionDialogWaitClient.isChecked){
-                item.status = "Ожидает клиента"
-            }
-            else if(binding.rbOrderDescriptionDialogComplete.isChecked){
-                item.status = "Выполнен"
-            }
-            else if(binding.rbOrderDescriptionDialogCanceled.isChecked){
-                item.status = "Отменен"
-            }
-            else {
+                val bundle = Bundle()
+                bundle.putSerializable("ORDER_DESCRIPTION_STATUS", item)
+                setFragmentResult("ORDER_DESCRIPTION", bundle)
                 closeFragment()
-                return@setOnClickListener
             }
-
-            val bundle = Bundle()
-            bundle.putSerializable("ORDER_DESCRIPTION_STATUS", item)
-            setFragmentResult("ORDER_DESCRIPTION", bundle)
-            closeFragment()
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
         binding.btnOrderDescriptionDialogCancel.setOnClickListener {
-            closeFragment()
+            try{
+                closeFragment()
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
     }
 
     private fun closeFragment() {
-        this.dismiss()
+        try{
+            this.dismiss()
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }

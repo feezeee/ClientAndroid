@@ -70,11 +70,21 @@
                         android:textSize="8pt" />
                     <TextView
                         android:id="@+id/tv_book_item_price"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="@string/book_item_price"
+                        android:maxLength="20"
+                        android:text="0.0"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="8pt" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text=" р."
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="8pt" />

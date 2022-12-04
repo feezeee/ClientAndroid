@@ -102,8 +102,9 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:visibility="gone"
+        android:backgroundTint="#403947"
+        app:borderWidth="0dp"
         android:id="@+id/fab_basket_complete_basket"
-        android:backgroundTint="#367385"
         android:src="@drawable/ic_baseline_arrow_forward_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
