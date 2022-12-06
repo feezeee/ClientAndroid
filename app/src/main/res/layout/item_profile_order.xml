@@ -7,13 +7,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_rowWeight="1"
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
+        app:contentPadding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,43 +20,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/ll_order_item_person_phone_number"
+                android:id="@+id/ll_profile_order_item_person_phone_number"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginVertical="20dp">
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/tv_order_item_full_name"
-                    android:maxWidth="200dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textSize="10pt"
-                    android:textColor="#383E42"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-                <TextView
-                    android:id="@+id/tv_order_item_phone_number"
                     android:layout_marginTop="5dp"
                     android:maxWidth="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text=""
+                    android:text="@string/registration_date_for_order"
                     android:textSize="6pt"
                     android:textColor="#7F8F9A"
                     android:maxLines="1"
                     android:ellipsize="end"/>
+                <TextView
+                    android:id="@+id/tv_profile_order_item_registration_date"
+                    android:maxWidth="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:textSize="8pt"
+                    android:textColor="#383E42"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:maxWidth="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/order_status"
+                    android:textSize="6pt"
+                    android:textColor="#7F8F9A"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+                <TextView
+                    android:id="@+id/tv_profile_order_item_status"
+                    android:maxWidth="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:textSize="8pt"
+                    android:textColor="#383E42"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
             </LinearLayout>
             <TextView
-                android:id="@+id/tv_order_item_full_price"
+                android:id="@+id/tv_profile_order_item_full_price"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_order_item_static_value_text"
-                app:layout_constraintStart_toEndOf="@id/ll_order_item_person_phone_number"
+                app:layout_constraintEnd_toStartOf="@id/tv_profile_order_item_static_value_text"
+                app:layout_constraintStart_toEndOf="@id/ll_profile_order_item_person_phone_number"
                 android:layout_marginLeft="10dp"
                 android:layout_width="0dp"
                 android:textAlignment="textEnd"
@@ -69,13 +84,12 @@
                 android:maxLines="1"
                 android:ellipsize="end"/>
             <TextView
-                android:id="@+id/tv_order_item_static_value_text"
+                android:id="@+id/tv_profile_order_item_static_value_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="20dp"
                 android:textSize="10pt"
                 android:textColor="#383E42"
                 android:text=" р."/>

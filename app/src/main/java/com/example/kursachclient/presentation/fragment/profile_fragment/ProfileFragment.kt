@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentProfileBinding
+import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.book_fragment.ProfileAdapter
+import com.example.kursachclient.presentation.fragment.order_fragment.OrderAdapter
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -19,6 +23,7 @@ import java.time.format.DateTimeFormatter
 class ProfileFragment : BaseFragment() {
     lateinit var binding: FragmentProfileBinding
     lateinit var viewModel: ProfileViewModel
+    lateinit var adapter: ProfileAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +39,14 @@ class ProfileFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBarIsDisplayed(true)
+        progressBarProfileIsDisplayed(true)
+        progressBarOrdersIsDisplayed(true)
 
         viewModel.liveData.observe(viewLifecycleOwner) {
             try {
                 binding.tvSettingFullUserName.text = "${it.firstName} ${it.lastName}"
                 binding.tvSettingPhoneNumber.text = it.phoneNumber.toString()
-                var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+                val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
                 binding.tvOrderDescriptionCreatedDate.text =
                     Instant.ofEpochSecond(it.registration_date)
                         .atZone(ZoneId.systemDefault())
@@ -48,7 +54,19 @@ class ProfileFragment : BaseFragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            progressBarIsDisplayed(false)
+            progressBarProfileIsDisplayed(false)
+        }
+
+        viewModel.liveDataOrderList.observe(viewLifecycleOwner) {
+            try {
+                adapter = ProfileAdapter(it)
+                binding.rvProfileOrderList.layoutManager = GridLayoutManager(context, 1)
+                binding.rvProfileOrderList.adapter = adapter
+                progressBarOrdersIsDisplayed(false)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            progressBarProfileIsDisplayed(false)
         }
         binding.btnProfileLogout.setOnClickListener {
             try {
@@ -74,9 +92,17 @@ class ProfileFragment : BaseFragment() {
                 e.printStackTrace()
             }
         }
-        viewModel.liveDataNeedToNotifyProgressBarHide.observe(viewLifecycleOwner) {
+        viewModel.liveDataUserInfNeedToNotifyProgressBarHide.observe(viewLifecycleOwner) {
             try {
-                progressBarIsDisplayed(false)
+                progressBarProfileIsDisplayed(false)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        viewModel.liveDataPersonalOrdersNeedToNotifyProgressBarHide.observe(viewLifecycleOwner) {
+            try {
+                progressBarOrdersIsDisplayed(false)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -84,18 +110,36 @@ class ProfileFragment : BaseFragment() {
 
 
         viewModel.getUserProfile(pref.getToken())
+        viewModel.getPersonalOrderList(pref.getToken())
     }
 
-    private fun progressBarIsDisplayed(isDisplayed: Boolean) {
+    private fun progressBarProfileIsDisplayed(isDisplayed: Boolean) {
         try {
             when (isDisplayed) {
                 true -> {
                     binding.btnProfileLogout.isEnabled = false
-                    binding.clProfileProgressBar.visibility = View.VISIBLE
+                    binding.clProfileProfileProgressBar.visibility = View.VISIBLE
                 }
                 false -> {
                     binding.btnProfileLogout.isEnabled = true
-                    binding.clProfileProgressBar.visibility = View.GONE
+                    binding.clProfileProfileProgressBar.visibility = View.GONE
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun progressBarOrdersIsDisplayed(isDisplayed: Boolean) {
+        try {
+            when (isDisplayed) {
+                true -> {
+                    binding.btnProfileLogout.isEnabled = false
+                    binding.clProfileOrdersProgressBar.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.btnProfileLogout.isEnabled = true
+                    binding.clProfileOrdersProgressBar.visibility = View.GONE
                 }
             }
         } catch (e: Exception) {

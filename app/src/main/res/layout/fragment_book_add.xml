@@ -85,13 +85,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_book_add_book_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="fill"
-        android:layout_marginHorizontal="20dp"
+        android:layout_width="210dp"
+        android:layout_height="297dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/profile_card"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +98,8 @@
         <ImageView
             android:id="@+id/iv_book_add_main_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:src="@drawable/no_photos" />
     </androidx.cardview.widget.CardView>

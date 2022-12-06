@@ -66,6 +66,10 @@ interface ApiService{
     @GET("api/order")
     suspend fun getOrders(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
+    @GET("api/order/personal")
+    suspend fun getPersonalOrders(@Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
+
+
     @PATCH("api/order")
     suspend fun updateStatus(
         @Query(value="orderKey", encoded=true) orderId : Int,

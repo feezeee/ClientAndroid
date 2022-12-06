@@ -41,4 +41,7 @@
     <string name="sign_out">Выйти с аккаунта</string>
     <string name="home">Главная</string>
     <string name="books">Книги</string>
+    <string name="order_list">Список заказов</string>
+    <string name="registration_date_for_order">Дата оформления</string>
+    <string name="order_status">Статус заказа</string>
 </resources>

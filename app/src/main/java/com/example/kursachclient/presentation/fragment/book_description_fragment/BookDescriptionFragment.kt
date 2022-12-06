@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.kursachclient.R
@@ -47,20 +48,21 @@ class BookDescriptionFragment : BaseFragment() {
                 Log.e("TAG", it.toString())
                 binding.etBookDescriptionBookName.setText(it.name)
                 binding.etBookDescriptionBookTitle.setText(it.title)
-                if(it.image == null) {
+                if(it.image == null){
+                    binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_CENTER
                     Glide.with(view)
                         .load(R.drawable.no_photos)
-                        .fitCenter()
-                        .placeholder(R.drawable.ic_baseline_image_search_24)
+                        .error(R.drawable.no_photos)
                         .into(binding.imBookDescriptionMainImage)
                 }
                 else{
+                    binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_XY
                     Glide.with(view)
-                        .load(RetrofitInstance.URL + it.image.url)
-                        .placeholder(R.drawable.ic_baseline_image_search_24)
-                        .centerCrop()
+                        .load(RetrofitInstance.URL + it.image?.url)
+                        .error(R.drawable.no_photos)
                         .into(binding.imBookDescriptionMainImage)
                 }
+
                 binding.etBookDescriptionBookPrice.setText(it.price.toBigDecimal()
                     .setScale(2, RoundingMode.UP).toString())
             }

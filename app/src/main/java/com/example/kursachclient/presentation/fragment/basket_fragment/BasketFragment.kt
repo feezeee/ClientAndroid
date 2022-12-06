@@ -38,6 +38,7 @@ class BasketFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         progressBarIsDisplayed(true)
+        binding.fabBasketCompleteBasket.setColorFilter(resources.getColor(R.color.white))
         viewModel.liveData.observe(viewLifecycleOwner) {
             try {
                 Log.e("TAG", it.toString())

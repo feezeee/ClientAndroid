@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.kursachclient.R
 import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.book.GetBookResponse
@@ -62,13 +63,24 @@ class BookAdapter(
                     .setScale(2, RoundingMode.UP).toString()
                 priceTextView.text = priceStr
 
-                if(item.image == null) {
-                    Glide.with(itemView).load(R.drawable.no_photos).placeholder(R.drawable.ic_baseline_image_search_24).into(mainImageView)
+
+                if(item.image == null){
+                    mainImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                    Glide.with(itemView)
+                        .load(R.drawable.no_photos)
+                        .placeholder(R.drawable.ic_baseline_image_search_24)
+                        .error(R.drawable.no_photos)
+                        .into(mainImageView)
                 }
                 else{
-                    Glide.with(itemView).load(RetrofitInstance.URL + item.image.url)
-                        .placeholder(R.drawable.ic_baseline_image_search_24).centerCrop().into(mainImageView)
+                    mainImageView.scaleType = ImageView.ScaleType.FIT_XY
+                    Glide.with(itemView)
+                        .load(RetrofitInstance.URL + item.image?.url)
+                        .placeholder(R.drawable.ic_baseline_image_search_24)
+                        .error(R.drawable.no_photos)
+                        .into(mainImageView)
                 }
+
 
                 itemView.setOnClickListener {
                     try{

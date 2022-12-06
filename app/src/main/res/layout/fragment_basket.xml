@@ -101,8 +101,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:visibility="gone"
-        android:backgroundTint="#403947"
+        android:visibility="visible"
+        android:backgroundTint="@color/background_color"
         app:borderWidth="0dp"
         android:id="@+id/fab_basket_complete_basket"
         android:src="@drawable/ic_baseline_arrow_forward_24"
