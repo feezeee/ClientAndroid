@@ -89,7 +89,7 @@
         android:layout_width="210dp"
         android:layout_height="297dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/profile_card"
+        android:backgroundTint="#6661D8"
         app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"

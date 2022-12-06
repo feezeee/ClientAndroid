@@ -88,9 +88,9 @@
         android:layout_width="210dp"
         android:layout_height="297dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/profile_card"
+        android:backgroundTint="#6661D8"
         app:cardCornerRadius="10dp"
-        app:cardElevation="4dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_book_add_header">
@@ -169,7 +169,7 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/write_book_price"
                 android:inputType="numberDecimal"
-                android:maxLength="30"
+                android:maxLength="7"
                 android:text="@string/default_price" />
         </LinearLayout>
     </ScrollView>
