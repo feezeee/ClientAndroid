@@ -64,6 +64,12 @@ class ProfileAdapter(
                 fullPriceTextView.text =
                     item.fullPrice.toBigDecimal().setScale(2, RoundingMode.UP).toString()
                 orderStatusTextView.text = item.status
+
+                itemView.setOnLongClickListener {
+                    Navigation.findNavController(itemView).navigate(R.id.paymentFragment)
+                    true
+                }
+
                 if(orderStatusTextView.text.toString() == "Ожидает оплаты"){
 //                    itemView.setOnClickListener {
 //                        try {
