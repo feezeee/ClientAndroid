@@ -1,10 +1,9 @@
-package com.example.kursachclient.presentation.fragment
+package com.example.kursachclient.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.book.GetBookResponse
 
 open class BaseViewModel <T> : ViewModel(){
 

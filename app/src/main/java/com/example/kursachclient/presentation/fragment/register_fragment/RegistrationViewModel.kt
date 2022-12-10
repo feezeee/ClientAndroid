@@ -1,14 +1,9 @@
 package com.example.kursachclient.presentation.fragment.register_fragment
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kursachclient.domain.*
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.registration.PostRegisterModel
-import com.example.kursachclient.presentation.fragment.BaseViewModel
+import com.example.kursachclient.presentation.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

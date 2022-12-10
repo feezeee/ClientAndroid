@@ -14,8 +14,7 @@ import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentProfileBinding
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
-import com.example.kursachclient.presentation.fragment.book_fragment.ProfileAdapter
-import com.example.kursachclient.presentation.fragment.order_fragment.OrderAdapter
+import com.example.kursachclient.presentation.sheet_dialog_fragment.payment.PaymentSheetDialogFragment
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -59,7 +58,7 @@ class ProfileFragment : BaseFragment() {
 
         viewModel.liveDataOrderList.observe(viewLifecycleOwner) {
             try {
-                adapter = ProfileAdapter(it)
+                adapter = ProfileAdapter(it) { it -> payLongClickListener(it) }
                 binding.rvProfileOrderList.layoutManager = GridLayoutManager(context, 1)
                 binding.rvProfileOrderList.adapter = adapter
                 progressBarOrdersIsDisplayed(false)
@@ -112,6 +111,23 @@ class ProfileFragment : BaseFragment() {
         viewModel.getUserProfile(pref.getToken())
         viewModel.getPersonalOrderList(pref.getToken())
     }
+
+    private fun payLongClickListener(item: GetOrderResponse) {
+        try{
+
+            val paySheetDialog = PaymentSheetDialogFragment(item) { updateInfo() }
+            paySheetDialog.show(childFragmentManager, "FEEZE_PAY")
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    private fun updateInfo(){
+        progressBarOrdersIsDisplayed(true)
+        viewModel.getPersonalOrderList(pref.getToken())
+    }
+
 
     private fun progressBarProfileIsDisplayed(isDisplayed: Boolean) {
         try {

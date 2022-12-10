@@ -30,6 +30,12 @@ class OrderDescriptionStatusDialogFragment(private var item: GetOrderResponse) :
             "В обработке".lowercase() -> {
                 binding.rbOrderDescriptionDialogInProgress.isChecked = true
             }
+            "Ожидает оплаты".lowercase() -> {
+                binding.rbOrderDescriptionDialogPaymentWait.isChecked = true
+            }
+            "Оплачено".lowercase() -> {
+                binding.rbOrderDescriptionDialogPaymentComplete.isChecked = true
+            }
             "Ожидает клиента".lowercase() -> {
                 binding.rbOrderDescriptionDialogWaitClient.isChecked = true
             }
@@ -52,6 +58,12 @@ class OrderDescriptionStatusDialogFragment(private var item: GetOrderResponse) :
                 }
                 else if(binding.rbOrderDescriptionDialogWaitClient.isChecked){
                     item.status = "Ожидает клиента"
+                }
+                else if(binding.rbOrderDescriptionDialogPaymentWait.isChecked){
+                    item.status = "Ожидает оплаты"
+                }
+                else if(binding.rbOrderDescriptionDialogPaymentComplete.isChecked){
+                    item.status = "Оплачено"
                 }
                 else if(binding.rbOrderDescriptionDialogComplete.isChecked){
                     item.status = "Выполнен"

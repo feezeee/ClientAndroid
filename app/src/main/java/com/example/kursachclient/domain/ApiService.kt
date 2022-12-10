@@ -9,6 +9,7 @@ import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
 import com.example.kursachclient.domain.model.login_is_free.GetLoginStatus
 import com.example.kursachclient.domain.model.order.GetOrderResponse
+import com.example.kursachclient.domain.model.order.PayOrderRequest
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
 import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
 import com.example.kursachclient.domain.model.registration.PostRegisterModel
@@ -69,6 +70,8 @@ interface ApiService{
     @GET("api/order/personal")
     suspend fun getPersonalOrders(@Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
+    @GET("api/order/{key}")
+    suspend fun getOrderById(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<GetOrderResponse>
 
     @PATCH("api/order")
     suspend fun updateStatus(
@@ -81,6 +84,9 @@ interface ApiService{
 
     @DELETE("api/order/{key}")
     suspend fun deleteOrder(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<Unit>
+
+    @POST("api/order/pay-order")
+    suspend fun payOrder(@Body payOrder: PayOrderRequest, @Header("Authorization") token: String) : Response<Unit>
 
     //Order-item
     @GET("api/order-item/{key}")

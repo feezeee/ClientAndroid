@@ -2,15 +2,11 @@ package com.example.kursachclient.presentation.fragment.book_description_fragmen
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kursachclient.domain.ApiService
-import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
-import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
-import com.example.kursachclient.presentation.fragment.BaseViewModel
+import com.example.kursachclient.presentation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

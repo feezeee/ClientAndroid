@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.model.book.GetBookResponse
-import com.example.kursachclient.presentation.fragment.BaseViewModel
+import com.example.kursachclient.presentation.BaseViewModel
 import kotlinx.coroutines.*
 
 class BookViewModel : BaseViewModel<MutableList<GetBookResponse>>() {

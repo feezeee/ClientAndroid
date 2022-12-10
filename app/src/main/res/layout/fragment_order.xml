@@ -67,7 +67,18 @@
                     android:layout_height="wrap_content"
                     android:textColor="#403947"
                     android:text="Ожидает клиента" />
-
+                <RadioButton
+                    android:id="@+id/rb_wait_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#403947"
+                    android:text="Ожидает оплаты"/>
+                <RadioButton
+                    android:id="@+id/rb_payment_complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#403947"
+                    android:text="Оплачено"/>
                 <RadioButton
                     android:id="@+id/rb_order_complete"
                     android:layout_width="wrap_content"

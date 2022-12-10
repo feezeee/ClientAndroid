@@ -1,23 +1,15 @@
-package com.example.kursachclient.presentation.fragment.book_fragment
+package com.example.kursachclient.presentation.fragment.profile_fragment
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import android.os.Looper
-import android.util.Log
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.kursachclient.R
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.order.GetOrderResponse
-import com.example.kursachclient.presentation.fragment.book_description_fragment.BookDescriptionFragment
 import java.math.RoundingMode
 import java.time.Instant
 import java.time.ZoneId
@@ -25,7 +17,8 @@ import java.time.format.DateTimeFormatter
 import kotlin.Exception
 
 class ProfileAdapter(
-    private val orderList: MutableList<GetOrderResponse>
+    private val orderList: MutableList<GetOrderResponse>,
+    private val payClickListener: (GetOrderResponse) -> Unit
 ) : RecyclerView.Adapter<ProfileAdapter.DescriptionCoinViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -37,6 +30,7 @@ class ProfileAdapter(
         return DescriptionCoinViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
         holder.bind(orderList[position])
     }
@@ -53,6 +47,7 @@ class ProfileAdapter(
         private val fullPriceTextView: TextView =
             itemView.findViewById(R.id.tv_profile_order_item_full_price)
 
+        @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
         fun bind(item: GetOrderResponse) {
             try {
@@ -65,25 +60,18 @@ class ProfileAdapter(
                     item.fullPrice.toBigDecimal().setScale(2, RoundingMode.UP).toString()
                 orderStatusTextView.text = item.status
 
-                itemView.setOnLongClickListener {
-                    Navigation.findNavController(itemView).navigate(R.id.paymentFragment)
-                    true
-                }
 
                 if(orderStatusTextView.text.toString() == "Ожидает оплаты"){
-//                    itemView.setOnClickListener {
-//                        try {
-//                            val bundle = Bundle()
-//                            bundle.putSerializable("order", item)
-//                            Navigation.findNavController(itemView)
-//                                .navigate(
-//                                    R.id.action_orderFragment_to_orderDescriptionFragment,
-//                                    bundle
-//                                )
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    }
+                    itemView.setOnClickListener{
+                        try {
+                            payClickListener(item)
+                            true
+                        }
+                        catch (e: Exception) {
+                            e.printStackTrace()
+                            true
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

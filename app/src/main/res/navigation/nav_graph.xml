@@ -86,6 +86,6 @@
         android:label="BasketDialogFragment" />
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="com.example.kursachclient.presentation.fragment.payment_fragment.PaymentFragment"
+        android:name="com.example.kursachclient.presentation.sheet_dialog_fragment.payment.PaymentSheetDialogFragment"
         android:label="PaymentFragment" />
 </navigation>

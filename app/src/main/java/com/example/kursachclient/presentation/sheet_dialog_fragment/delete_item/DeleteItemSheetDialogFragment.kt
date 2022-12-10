@@ -30,6 +30,7 @@ class DeleteItemSheetDialogFragment(
     }
 
     override fun onStart() {
+        super.onStart()
 
         binding.btnBottomSheetDeleteRemoveNo.setOnClickListener{
             try {
@@ -48,6 +49,5 @@ class DeleteItemSheetDialogFragment(
                 e.printStackTrace()
             }
         }
-        super.onStart()
     }
 }

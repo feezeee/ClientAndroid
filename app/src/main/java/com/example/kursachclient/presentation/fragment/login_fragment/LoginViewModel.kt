@@ -1,14 +1,10 @@
 package com.example.kursachclient.presentation.fragment.login_fragment
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
 import com.example.kursachclient.domain.model.authorization.GetTokenRoleModel
-import com.example.kursachclient.domain.instance.RetrofitInstance
-import com.example.kursachclient.presentation.fragment.BaseFragment
-import com.example.kursachclient.presentation.fragment.BaseViewModel
+import com.example.kursachclient.presentation.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

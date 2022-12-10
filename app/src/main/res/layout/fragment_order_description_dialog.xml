@@ -52,6 +52,18 @@
                     android:text="Ожидает клиента" />
 
                 <RadioButton
+                    android:id="@+id/rb_order_description_dialog_payment_wait"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ожидает оплаты" />
+
+                <RadioButton
+                    android:id="@+id/rb_order_description_dialog_payment_complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Оплачено" />
+
+                <RadioButton
                     android:id="@+id/rb_order_description_dialog_complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

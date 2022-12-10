@@ -44,4 +44,14 @@
     <string name="order_list">Список заказов</string>
     <string name="registration_date_for_order">Дата оформления</string>
     <string name="order_status">Статус заказа</string>
+    <string name="CARD_HOLDER">CARD HOLDER</string>
+    <string name="expires">EXPIRES</string>
+    <string name="card_example">1234 1234 1234 1234</string>
+    <string name="dzianis_skurat">DZIANIS SKURAT</string>
+    <string name="_08_22">08/22</string>
+    <string name="your_card_number">Ваш номер карты</string>
+    <string name="active_time">Срок действия</string>
+    <string name="cvv">CVV</string>
+    <string name="card_expample">1234 1234 1234 1234</string>
+    <string name="card_owner">Владелец карты</string>
 </resources>
