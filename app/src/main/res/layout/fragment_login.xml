@@ -109,6 +109,7 @@
         android:text="@string/enter"/>
 
     <TextView
+        android:padding="10dp"
         android:id="@+id/tv_login_registration_ref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

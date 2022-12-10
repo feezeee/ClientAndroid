@@ -1,6 +1,9 @@
 package com.example.kursachclient.presentation.fragment.register_fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,15 +34,17 @@ class RegistrationFragment : BaseFragment() {
                 val firstName = binding.etRegistrationFirstName.text.toString()
                 val lastName = binding.etRegistrationLastName.text.toString()
 
+                var status = true
+
                 if (firstName.isEmpty()) {
                     binding.etRegistrationFirstName.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (lastName.isEmpty()) {
                     binding.etRegistrationLastName.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
 
                 val phoneNumberRegex = "^\\+\\d{3}\\s\\(\\d{2}\\)\\s\\d{3}\\s\\d{2}\\s\\d{2}".toRegex()
@@ -48,35 +53,37 @@ class RegistrationFragment : BaseFragment() {
                 if (resultNumber == null) {
                     binding.etRegistrationPhoneNumber.error = "Формат +*** (**) *** ** **"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 val login = binding.etRegistrationLogin.text.toString()
                 if (login.isEmpty()) {
                     binding.etRegistrationLogin.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login).matches()) {
                     binding.etRegistrationLogin.error = "Некорректный логин"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 val password = binding.etRegistrationPassword.text.toString()
                 if (password.isEmpty()) {
                     binding.etRegistrationPassword.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (password.length < 8) {
                     binding.etRegistrationPassword.error = "Минимальная длина пароля 8 символов"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
 
-                val registerModel =
-                    PostRegisterModel(firstName, lastName, resultNumber.value, login, password)
+                if(status){
+                    val registerModel =
+                        PostRegisterModel(firstName, lastName, binding.etRegistrationPhoneNumber.text.toString(), login, password)
 
-                viewModel.register(registerModel)
+                    viewModel.register(registerModel)
+                }
             }
             catch (e: Exception){
                 e.printStackTrace()
