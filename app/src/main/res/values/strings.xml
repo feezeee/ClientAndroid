@@ -54,4 +54,5 @@
     <string name="cvv">CVV</string>
     <string name="card_expample">1234 1234 1234 1234</string>
     <string name="card_owner">Владелец карты</string>
+    <string name="make_order">Оформить заказ</string>
 </resources>

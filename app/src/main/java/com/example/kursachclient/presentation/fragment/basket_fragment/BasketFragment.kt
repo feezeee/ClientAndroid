@@ -63,6 +63,10 @@ class BasketFragment : BaseFragment() {
             }
         }
 
+        binding.srBasketItems.setOnRefreshListener {
+            refresh()
+        }
+
         viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
             try {
                 showToast(message)
@@ -135,6 +139,12 @@ class BasketFragment : BaseFragment() {
             }
         }
 
+        viewModel.getBasket(pref.getToken())
+    }
+
+    private fun refresh(){
+        binding.srBasketItems.isRefreshing = false
+        progressBarIsDisplayed(true)
         viewModel.getBasket(pref.getToken())
     }
 

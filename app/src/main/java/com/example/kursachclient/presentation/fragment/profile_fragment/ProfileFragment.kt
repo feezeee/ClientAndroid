@@ -76,6 +76,10 @@ class ProfileFragment : BaseFragment() {
                 e.printStackTrace()
             }
         }
+
+        binding.srProfileOrderList.setOnRefreshListener {
+            refresh()
+        }
         viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
             try {
                 showToast(message)
@@ -110,6 +114,14 @@ class ProfileFragment : BaseFragment() {
 
         viewModel.getUserProfile(pref.getToken())
         viewModel.getPersonalOrderList(pref.getToken())
+    }
+
+    private fun refresh(){
+        binding.srProfileOrderList.isRefreshing = false
+        progressBarOrdersIsDisplayed(true)
+        progressBarProfileIsDisplayed(true)
+        viewModel.getPersonalOrderList(pref.getToken())
+        viewModel.getUserProfile(pref.getToken())
     }
 
     private fun payLongClickListener(item: GetOrderResponse) {

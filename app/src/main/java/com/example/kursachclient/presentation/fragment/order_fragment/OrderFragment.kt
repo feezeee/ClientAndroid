@@ -76,6 +76,9 @@ class OrderFragment : BaseFragment() {
                 e.printStackTrace()
             }
         }
+        binding.srOrderItems.setOnRefreshListener {
+            refresh()
+        }
         binding.rgOrderRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             try {
                 progressBarIsDisplayed(true)
@@ -90,6 +93,13 @@ class OrderFragment : BaseFragment() {
                 e.printStackTrace()
             }
         }
+        viewModel.getOrders(null, pref.getToken())
+    }
+
+    private fun refresh(){
+        binding.srOrderItems.isRefreshing = false
+        progressBarIsDisplayed(true)
+        binding.rbOrderAll.isChecked = true
         viewModel.getOrders(null, pref.getToken())
     }
 

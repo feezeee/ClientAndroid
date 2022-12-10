@@ -65,6 +65,9 @@ class BookFragment : BaseFragment() {
                 e.printStackTrace()
             }
         }
+        binding.srBookBooks.setOnRefreshListener {
+            refresh()
+        }
 
         binding.fabAddBook.setOnClickListener {
             try{
@@ -159,6 +162,11 @@ class BookFragment : BaseFragment() {
         catch (e: Exception){
             e.printStackTrace()
         }
+    }
+    private fun refresh(){
+        binding.srBookBooks.isRefreshing = false
+        progressBarIsDisplayed(true)
+        viewModel.getBooks(if(binding.svBookSearchBook.query.toString().isNullOrEmpty()) null else binding.svBookSearchBook.query.toString(), pref.getToken())
     }
 
     private fun itemLongClickListener(item: GetBookResponse) {

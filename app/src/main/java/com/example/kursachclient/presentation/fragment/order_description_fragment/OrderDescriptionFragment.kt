@@ -145,6 +145,10 @@ class OrderDescriptionFragment : BaseFragment() {
             }
         }
 
+        binding.srOrderItems.setOnRefreshListener {
+            refresh(orderResponse.id)
+        }
+
         binding.llOrderDescriptionClickableOrderStatus.setOnClickListener{
             try{
                 statusClickListener(orderResponse)
@@ -157,6 +161,11 @@ class OrderDescriptionFragment : BaseFragment() {
         viewModel.getOrderItems(orderResponse.id, pref.getToken())
     }
 
+    private fun refresh(id : Int){
+        binding.srOrderItems.isRefreshing = false
+        progressBarIsDisplayed(true)
+        viewModel.getOrderItems(id, pref.getToken())
+    }
 
     private fun statusClickListener(item: GetOrderResponse) {
         try{
