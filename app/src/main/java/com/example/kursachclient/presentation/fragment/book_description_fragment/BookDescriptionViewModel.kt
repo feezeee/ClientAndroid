@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
+import com.example.kursachclient.domain.model.image.GetImageResponse
+import com.example.kursachclient.domain.model.image.PostImageRequest
 import com.example.kursachclient.presentation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,6 +15,9 @@ import kotlinx.coroutines.launch
 
 class BookDescriptionViewModel : BaseViewModel<GetBookResponse>() {
     val liveDataNeedToNotifyGoneProgressBar: MutableLiveData<Unit> =
+        MutableLiveData()
+
+    val liveDataPostedImage: MutableLiveData<GetImageResponse> =
         MutableLiveData()
     fun getBookById(id: Int, token: String){
         viewModelScope.launch(Dispatchers.IO){
@@ -119,6 +124,42 @@ class BookDescriptionViewModel : BaseViewModel<GetBookResponse>() {
             }
             catch (ex: Exception){
                 liveDataShowToast.postValue("Ошибка на сервере")
+                liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
+                Log.e("TAG", ex.message.toString())
+            }
+        }
+    }
+
+    fun uploadImage(image: PostImageRequest, token: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(1000)
+            try {
+                var imageResult = apiService.postImage(image,"bearer $token")
+                when(imageResult.code()){
+                    200 -> {
+                        liveDataPostedImage.postValue(imageResult.body())
+                    }
+                    400 -> {
+                        liveDataShowToast.postValue("Проблема с картинкой")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
+                    }
+                    401 -> {
+                        liveDataShowToast.postValue("Ошибка авторизации")
+                        // Делаем разлогин
+                        liveDataSignOutAndRedirect.postValue(Unit)
+                    }
+                    403 -> {
+                        liveDataShowToast.postValue("У вас нет прав")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
+                    }
+                    else -> {
+                        liveDataShowToast.postValue("Проблема с картинкой")
+                        liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
+                    }
+                }
+            }
+            catch (ex: Exception){
+                liveDataShowToast.postValue("Проблема с картинкой")
                 liveDataNeedToNotifyGoneProgressBar.postValue(Unit)
                 Log.e("TAG", ex.message.toString())
             }

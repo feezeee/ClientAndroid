@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.method.KeyListener
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,8 +29,10 @@ import com.example.kursachclient.domain.instance.RetrofitInstance
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
+import com.example.kursachclient.domain.model.image.PostImageRequest
 import com.example.kursachclient.presentation.MainActivity
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import java.io.ByteArrayOutputStream
 import java.math.RoundingMode
 
 class BookDescriptionFragment : BaseFragment() {
@@ -45,6 +48,7 @@ class BookDescriptionFragment : BaseFragment() {
         viewModel = BookDescriptionViewModel()
         return binding.root
     }
+    private var imageId: Int? = null
 
 
     @SuppressLint("SetTextI18n")
@@ -60,6 +64,7 @@ class BookDescriptionFragment : BaseFragment() {
                 Log.e("TAG", it.toString())
                 binding.etBookDescriptionBookName.setText(it.name)
                 binding.etBookDescriptionBookTitle.setText(it.title)
+                imageId = it.image?.id
                 if(it.image == null){
                     binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_CENTER
                     Glide.with(view)
@@ -109,6 +114,11 @@ class BookDescriptionFragment : BaseFragment() {
             }
         }
 
+        viewModel.liveDataPostedImage.observe(viewLifecycleOwner){
+            progressBarIsDisplayed(false)
+            imageId = it.id
+        }
+
         binding.btnBookDescriptionAddToBasket.setOnClickListener {
             try {
                 progressBarIsDisplayed(true)
@@ -122,16 +132,17 @@ class BookDescriptionFragment : BaseFragment() {
 
         binding.ivBookDescriptionUpdate.setOnClickListener {
             try {
+                var status = true
                 progressBarIsDisplayed(true)
                 if (binding.etBookDescriptionBookName.text.isEmpty()) {
                     binding.etBookDescriptionBookName.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (binding.etBookDescriptionBookTitle.text.isEmpty()) {
                     binding.etBookDescriptionBookTitle.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
 
                 val priceRegex = "^\\d+.\\d{1,2}".toRegex()
@@ -139,29 +150,31 @@ class BookDescriptionFragment : BaseFragment() {
                 if (resultPrice == null) {
                     binding.etBookDescriptionBookPrice.error = "Формат *.00"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
-                val resultPriceDecimal = resultPrice.value.toBigDecimal().setScale(2, RoundingMode.UP)
-                if (resultPriceDecimal.toString() == "0.00") {
+
+                val resultPriceDecimal = resultPrice?.value?.toBigDecimal()?.setScale(2, RoundingMode.UP)
+                if (resultPrice != null && resultPriceDecimal.toString() == "0.00") {
                     binding.etBookDescriptionBookPrice.error = "Минимальная цена 0.01"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
+                if(status && resultPriceDecimal != null){
 
-                var updatedBook = UpdateBookRequest(
-                    book.id,
-                    binding.etBookDescriptionBookName.text.toString(),
-                    binding.etBookDescriptionBookTitle.text.toString(),
-                    resultPriceDecimal.toDouble(),
-                    null)
+                    val updatedBook = UpdateBookRequest(
+                        book.id,
+                        binding.etBookDescriptionBookName.text.toString(),
+                        binding.etBookDescriptionBookTitle.text.toString(),
+                        resultPriceDecimal.toDouble(),
+                        imageId)
 
-                viewModel.updateBook(updatedBook, pref.getToken())
+                    viewModel.updateBook(updatedBook, pref.getToken())
+                }
             }
             catch (e: Exception){
                 e.printStackTrace()
             }
         }
-
 
         binding.ivBookDescriptionBack.setOnClickListener {
             try{
@@ -190,6 +203,27 @@ class BookDescriptionFragment : BaseFragment() {
                     binding.etBookDescriptionBookName.isFocusable = true
                     binding.etBookDescriptionBookTitle.isFocusable = true
                     binding.etBookDescriptionBookPrice.isFocusable = true
+
+                    binding.imBookDescriptionMainImage.setOnClickListener {
+
+                        val pictureDialog = context?.let { context -> AlertDialog.Builder(context) }
+                        pictureDialog?.setTitle("Что сделать")
+                        val pictureDialogItem = arrayOf(
+                            "Выбрать фото из галереи",
+                            "Сделать фото",
+                            "Очистить"
+                        )
+                        pictureDialog?.setItems(pictureDialogItem) { dialog, which ->
+
+                            when (which) {
+                                0 -> galleryCheckPermission()
+                                1 -> cameraCheckPermission()
+                                2 -> clearMainImage()
+                            }
+                        }
+
+                        pictureDialog?.show()
+                    }
                 }
                 else -> {
                     binding.ivBookDescriptionUpdate.visibility = View.VISIBLE
@@ -204,6 +238,14 @@ class BookDescriptionFragment : BaseFragment() {
         }
     }
 
+    private fun clearMainImage(){
+        binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_CENTER
+        Glide.with(this)
+            .load(R.drawable.no_photos)
+            .error(R.drawable.no_photos)
+            .into(binding.imBookDescriptionMainImage)
+        imageId = null
+    }
 
     private val CAMERA_REQUEST_CODE = 1
     private val GALLERY_REQUEST_CODE = 2
@@ -250,11 +292,10 @@ class BookDescriptionFragment : BaseFragment() {
         context?.let {
             AlertDialog.Builder(it)
                 .setMessage(
-                    "It looks like you have turned off permissions"
-                            + "required for this feature. It can be enable under App settings!!!"
+                    "У вас нет разрешений!!!"
                 )
 
-                .setPositiveButton("Go TO SETTINGS") { _ , _ ->
+                .setPositiveButton("Настройки") { _ , _ ->
 
                     try {
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -270,7 +311,7 @@ class BookDescriptionFragment : BaseFragment() {
                         e.printStackTrace()
                     }
                 }
-                .setNegativeButton("CANCEL") { dialog, _ ->
+                .setNegativeButton("Отмена") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
         }
@@ -285,23 +326,46 @@ class BookDescriptionFragment : BaseFragment() {
 
                 CAMERA_REQUEST_CODE -> {
                     val bitmap = data?.extras?.get("data") as Bitmap
-
-                    // using coroutine image loader (coil)
-                    binding.imBookDescriptionMainImage.load(bitmap) {
-                        crossfade(true)
-                        crossfade(1000)
-                    }
                     binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_XY
+
+                    Glide.with(this).load(bitmap)
+                        .error(R.drawable.no_photos)
+                        .into(binding.imBookDescriptionMainImage)
+
+                    try {
+                        val baos = ByteArrayOutputStream()
+                        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                        val b = baos.toByteArray()
+                        var resStr = Base64.encodeToString(b, Base64.DEFAULT)
+                        var image = PostImageRequest(resStr)
+                        viewModel.uploadImage(image, pref.getToken())
+                    } catch (e: Exception) {
+                        showToast("Проблема с изображением")
+                    }
+
                 }
 
                 GALLERY_REQUEST_CODE -> {
-                    binding.imBookDescriptionMainImage.load(data?.data) {
-                        Log.d("TAG", data?.data.toString())
-                        crossfade(true)
-                        crossfade(1000)
-                    }
                     binding.imBookDescriptionMainImage.scaleType = ImageView.ScaleType.FIT_XY
 
+                    Glide.with(this).load(data?.data)
+                        .error(R.drawable.no_photos)
+                        .into(binding.imBookDescriptionMainImage)
+
+                    try {
+                        val baos = ByteArrayOutputStream()
+                        val bitmap = MediaStore.Images.Media.getBitmap(
+                            requireContext().contentResolver,
+                            data?.data
+                        )
+                        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                        val b = baos.toByteArray()
+                        var resStr = Base64.encodeToString(b, Base64.DEFAULT)
+                        var image = PostImageRequest(resStr)
+                        viewModel.uploadImage(image, pref.getToken())
+                    } catch (e: Exception) {
+                        showToast("Проблема с изображением")
+                    }
                 }
             }
         }

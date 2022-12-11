@@ -10,6 +10,8 @@ data class AddBookRequest(
     var title: String,
     @SerializedName("price")
     var price : Double,
-    @SerializedName("image_key")
-    var imageId : Int?
+//    @SerializedName("image_key")
+//    var imageId : Int?
+    @SerializedName("image")
+    var image : String?
 ) : Serializable

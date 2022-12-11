@@ -7,6 +7,8 @@ import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
+import com.example.kursachclient.domain.model.image.GetImageResponse
+import com.example.kursachclient.domain.model.image.PostImageRequest
 import com.example.kursachclient.domain.model.login_is_free.GetLoginStatus
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.order.PayOrderRequest
@@ -98,5 +100,8 @@ interface ApiService{
     @DELETE("api/order-item/{key}")
     suspend fun deleteOrderItem(@Path("key") itemId: Int, @Header("Authorization") token: String) : Response<Unit>
 
+    //Image
+    @POST("/api/image")
+    suspend fun postImage(@Body image: PostImageRequest, @Header("Authorization") token: String): Response<GetImageResponse>
 
 }
