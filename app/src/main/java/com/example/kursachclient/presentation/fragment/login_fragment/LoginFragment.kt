@@ -41,29 +41,32 @@ class LoginFragment : BaseFragment() {
                 val login = binding.etLoginLogin.text.toString()
                 val password = binding.etLoginPassword.text.toString()
 
+                var status = true
+
                 if (login.isEmpty()) {
                     binding.etLoginLogin.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(login).matches()) {
                     binding.etLoginLogin.error = "Некорректный логин"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
 
                 if (password.isEmpty()) {
                     binding.etLoginPassword.error = "Не может быть пустым"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
                 if (password.length < 8) {
                     binding.etLoginPassword.error = "Минимальная длина пароля 8 символов"
                     progressBarIsDisplayed(false)
-                    return@setOnClickListener
+                    status = false
                 }
-
-                viewModel.login(login, password)
+                if(status){
+                    viewModel.login(login, password)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
