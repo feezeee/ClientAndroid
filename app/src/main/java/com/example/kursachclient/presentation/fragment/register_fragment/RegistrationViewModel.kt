@@ -2,12 +2,15 @@ package com.example.kursachclient.presentation.fragment.register_fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.registration.PostRegisterModel
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class RegistrationViewModel : BaseViewModel<Boolean>() {
+import javax.inject.Inject
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<Boolean>() {
 
     val liveDataNeedToNotifyLoginIsNotFree: MutableLiveData<Unit> =
         MutableLiveData()

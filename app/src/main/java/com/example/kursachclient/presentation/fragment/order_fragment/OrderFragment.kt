@@ -8,18 +8,22 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.core.view.children
 import androidx.core.view.get
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentOrderBinding
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.order_description_fragment.OrderDescriptionViewModel
 import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.reflect.Executable
 
+@AndroidEntryPoint
 class OrderFragment : BaseFragment() {
     lateinit var binding: FragmentOrderBinding
-    lateinit var viewModel: OrderViewModel
+    private val viewModel by viewModels<OrderViewModel>()
     lateinit var adapter: OrderAdapter
 
     override fun onCreateView(
@@ -28,7 +32,6 @@ class OrderFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         pref = SharedPreference(requireContext())
-        viewModel = OrderViewModel()
         binding = FragmentOrderBinding.inflate(inflater, container, false)
         return binding.root
     }

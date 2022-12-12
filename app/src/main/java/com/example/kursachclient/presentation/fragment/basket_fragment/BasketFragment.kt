@@ -6,22 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBasketBinding
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import com.example.kursachclient.presentation.BaseViewModel
 import com.example.kursachclient.presentation.dialog_fragment.basket.BasketDialogFragment
 import com.example.kursachclient.presentation.fragment.BaseFragment
 import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 
+@AndroidEntryPoint
 class BasketFragment : BaseFragment() {
     lateinit var binding: FragmentBasketBinding
-    lateinit var viewModel: BasketViewModel
+    private val viewModel by viewModels<BasketViewModel>()
     lateinit var adapter: BasketAdapter
 
     override fun onCreateView(
@@ -30,7 +34,6 @@ class BasketFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         pref = SharedPreference(requireContext())
-        viewModel = BasketViewModel()
         binding = FragmentBasketBinding.inflate(inflater, container, false)
         return binding.root
     }

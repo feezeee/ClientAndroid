@@ -8,15 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.kursachclient.databinding.FragmentRegistrationBinding
 import com.example.kursachclient.domain.model.registration.PostRegisterModel
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.profile_fragment.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegistrationFragment : BaseFragment() {
     lateinit var binding: FragmentRegistrationBinding
 
-    val viewModel = RegistrationViewModel()
+    private val viewModel by viewModels<RegistrationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

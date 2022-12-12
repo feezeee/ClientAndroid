@@ -3,22 +3,26 @@ package com.example.kursachclient.presentation.fragment.basket_fragment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
+@HiltViewModel
+class BasketViewModel @Inject constructor(private val apiService: ApiService) :
+    BaseViewModel<MutableList<GetBasketResponse>>() {
     val liveDataNeedToNotifyItemChanged: MutableLiveData<Triple<Boolean, Int, GetBasketResponse>> =
         MutableLiveData()
 
     val liveDataNeedToNotifyItemRemove: MutableLiveData<Pair<Boolean, GetBasketResponse>> =
         MutableLiveData()
 
-    val liveDataNeedToNotifyBasketEmpty: MutableLiveData<Unit> =
-        MutableLiveData()
+    val liveDataNeedToNotifyBasketEmpty: MutableLiveData<Unit> = MutableLiveData()
 
     fun getBasket(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -85,10 +89,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
     }
 
     fun addOrRemoveItemFromBasket(
-        item: AddBookToBasketRequest,
-        token: String,
-        position: Int,
-        basketItem: GetBasketResponse
+        item: AddBookToBasketRequest, token: String, position: Int, basketItem: GetBasketResponse
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -99,9 +100,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Корзина была обновлена")
                         liveDataNeedToNotifyItemChanged.postValue(
                             Triple(
-                                true,
-                                position,
-                                basketItem
+                                true, position, basketItem
                             )
                         )
                     }
@@ -109,9 +108,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Некорректный запрос")
                         liveDataNeedToNotifyItemChanged.postValue(
                             Triple(
-                                false,
-                                position,
-                                basketItem
+                                false, position, basketItem
                             )
                         )
                     }
@@ -122,9 +119,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("У вас нет прав")
                         liveDataNeedToNotifyItemChanged.postValue(
                             Triple(
-                                false,
-                                position,
-                                basketItem
+                                false, position, basketItem
                             )
                         )
                     }
@@ -132,9 +127,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Ошибка на сервере")
                         liveDataNeedToNotifyItemChanged.postValue(
                             Triple(
-                                false,
-                                position,
-                                basketItem
+                                false, position, basketItem
                             )
                         )
                     }
@@ -143,9 +136,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                 liveDataShowToast.postValue("Ошибка на сервере")
                 liveDataNeedToNotifyItemChanged.postValue(
                     Triple(
-                        false,
-                        position,
-                        basketItem
+                        false, position, basketItem
                     )
                 )
                 Log.e("TAG", ex.toString())
@@ -188,9 +179,8 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
     }
 
     fun deleteItemFromBasket(
-        itemId: Int,
-        token: String,
-        item: GetBasketResponse){
+        itemId: Int, token: String, item: GetBasketResponse
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 delay(1000)
@@ -200,8 +190,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Корзина была обновлена")
                         liveDataNeedToNotifyItemRemove.postValue(
                             Pair(
-                                true,
-                                item
+                                true, item
                             )
                         )
                     }
@@ -209,8 +198,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Некорректный запрос")
                         liveDataNeedToNotifyItemRemove.postValue(
                             Pair(
-                                false,
-                                item
+                                false, item
                             )
                         )
                     }
@@ -221,8 +209,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("У вас нет прав")
                         liveDataNeedToNotifyItemRemove.postValue(
                             Pair(
-                                false,
-                                item
+                                false, item
                             )
                         )
                     }
@@ -230,8 +217,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                         liveDataShowToast.postValue("Ошибка на сервере")
                         liveDataNeedToNotifyItemRemove.postValue(
                             Pair(
-                                false,
-                                item
+                                false, item
                             )
                         )
                     }
@@ -240,8 +226,7 @@ class BasketViewModel : BaseViewModel<MutableList<GetBasketResponse>>() {
                 liveDataShowToast.postValue("Ошибка на сервере")
                 liveDataNeedToNotifyItemRemove.postValue(
                     Pair(
-                        false,
-                        item
+                        false, item
                     )
                 )
                 Log.e("TAG", ex.toString())

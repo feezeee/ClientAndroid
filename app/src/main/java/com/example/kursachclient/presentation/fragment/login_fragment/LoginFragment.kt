@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentLoginBinding
-import com.example.kursachclient.presentation.MainActivity
+import com.example.kursachclient.MainActivity
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment() {
     lateinit var binding: FragmentLoginBinding
-    val viewModel = LoginViewModel()
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

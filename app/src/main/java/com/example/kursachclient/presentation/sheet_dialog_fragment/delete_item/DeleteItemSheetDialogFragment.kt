@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import com.example.kursachclient.R
 import com.example.kursachclient.databinding.FragmentBottomSheetDeleteBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeleteItemSheetDialogFragment(
     private val mainText: String,
     private val deleteItemClickListener: () -> Unit

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
@@ -19,9 +20,11 @@ import com.example.kursachclient.databinding.FragmentBottomSheetPaymentBinding
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.order_fragment.OrderAdapter
 import com.example.kursachclient.presentation.fragment.order_fragment.OrderViewModel
+import com.example.kursachclient.presentation.fragment.register_fragment.RegistrationViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.math.RoundingMode
-
+@AndroidEntryPoint
 class PaymentSheetDialogFragment(
     private val orderItem : GetOrderResponse,
     private val updateInfo: () -> Unit
@@ -29,7 +32,8 @@ class PaymentSheetDialogFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetPaymentBinding
     override fun getTheme(): Int = R.style.Denis_CustomBottomSheetDialogTheme
-    lateinit var viewModel: PaymentViewModel
+
+    private val viewModel by viewModels<PaymentViewModel>()
     lateinit var pref: SharedPreference
 
     override fun onCreateView(
@@ -39,7 +43,6 @@ class PaymentSheetDialogFragment(
     ): View? {
 
         pref = SharedPreference(requireContext())
-        viewModel = PaymentViewModel()
         binding = FragmentBottomSheetPaymentBinding.inflate(inflater, container, false)
         return binding.root
     }

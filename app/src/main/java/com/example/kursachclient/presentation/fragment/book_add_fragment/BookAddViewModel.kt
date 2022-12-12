@@ -6,15 +6,18 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.book.AddBookRequest
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
-
-class BookAddViewModel : BaseViewModel<Unit>() {
+@HiltViewModel
+class BookAddViewModel @Inject constructor(private val apiService: ApiService) : BaseViewModel<Unit>() {
 
     val liveDataNeedToNotifyGoneProgressBar: MutableLiveData<Unit> =
         MutableLiveData()

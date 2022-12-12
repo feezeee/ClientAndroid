@@ -41,7 +41,8 @@ class BookAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: DescriptionCoinViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DescriptionCoinViewHolder,
+                                  position: Int) {
         holder.bind(bookList[position])
     }
 

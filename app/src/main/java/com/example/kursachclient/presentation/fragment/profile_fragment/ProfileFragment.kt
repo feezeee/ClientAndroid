@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
@@ -14,14 +15,17 @@ import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentProfileBinding
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.order_fragment.OrderViewModel
 import com.example.kursachclient.presentation.sheet_dialog_fragment.payment.PaymentSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
     lateinit var binding: FragmentProfileBinding
-    lateinit var viewModel: ProfileViewModel
+    private val viewModel by viewModels<ProfileViewModel>()
     lateinit var adapter: ProfileAdapter
 
     override fun onCreateView(
@@ -31,7 +35,6 @@ class ProfileFragment : BaseFragment() {
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         pref = SharedPreference(requireContext())
-        viewModel = ProfileViewModel()
         return binding.root
     }
     @RequiresApi(Build.VERSION_CODES.O)

@@ -3,14 +3,17 @@ package com.example.kursachclient.presentation.fragment.profile_fragment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.user_profile.GetUserProfileResponse
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class ProfileViewModel : BaseViewModel<GetUserProfileResponse>() {
+import javax.inject.Inject
+@HiltViewModel
+class ProfileViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<GetUserProfileResponse>() {
     val liveDataUserInfNeedToNotifyProgressBarHide: MutableLiveData<Unit> =
         MutableLiveData()
     val liveDataPersonalOrdersNeedToNotifyProgressBarHide: MutableLiveData<Unit> =

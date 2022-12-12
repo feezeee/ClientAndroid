@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
-import android.text.method.KeyListener
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,8 +18,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
@@ -30,14 +29,17 @@ import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
 import com.example.kursachclient.domain.model.image.PostImageRequest
-import com.example.kursachclient.presentation.MainActivity
+import com.example.kursachclient.MainActivity
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.math.RoundingMode
 
+@AndroidEntryPoint
 class BookDescriptionFragment : BaseFragment() {
     lateinit var binding: FragmentBookDescriptionBinding
-    lateinit var viewModel: BookDescriptionViewModel
+    private val viewModel by viewModels<BookDescriptionViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +47,7 @@ class BookDescriptionFragment : BaseFragment() {
     ): View? {
         pref = SharedPreference(requireContext())
         binding = FragmentBookDescriptionBinding.inflate(inflater, container, false)
-        viewModel = BookDescriptionViewModel()
+//        viewModel = BookDescriptionViewModel()
         return binding.root
     }
     private var imageId: Int? = null

@@ -3,14 +3,18 @@ package com.example.kursachclient.presentation.sheet_dialog_fragment.payment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.domain.model.order.PayOrderRequest
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PaymentViewModel : BaseViewModel<Unit>() {
+@HiltViewModel
+class PaymentViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<Unit>() {
 
     fun payOrder(item: GetOrderResponse, token: String){
         viewModelScope.launch(Dispatchers.IO) {

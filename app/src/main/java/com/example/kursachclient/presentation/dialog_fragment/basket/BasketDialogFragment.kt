@@ -10,8 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.kursachclient.databinding.FragmentBasketDialogBinding
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.zip.Inflater
-
+@AndroidEntryPoint
 class BasketDialogFragment(private val minValue: UInt, private val maxValue: UInt, private var item: GetBasketResponse) : DialogFragment() {
 
     private lateinit var binding: FragmentBasketDialogBinding

@@ -22,19 +22,24 @@ import retrofit2.http.*
 interface ApiService{
 
     @GET("api/book")
-    suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String): Response<MutableList<GetBookResponse>>
+    suspend fun getBooks(@Query(value="filterName", encoded=true) filterName : String?,
+                         @Header("Authorization") token: String): Response<MutableList<GetBookResponse>>
 
     @GET("api/book/{key}")
-    suspend fun getBookByKey(@Path("key") key: Int, @Header("Authorization") token: String): Response<GetBookResponse?>
+    suspend fun getBookByKey(@Path("key") key: Int,
+                             @Header("Authorization") token: String): Response<GetBookResponse?>
 
     @POST("api/book")
-    suspend fun addBook(@Body book: AddBookRequest, @Header("Authorization") token: String): Response<Unit>
+    suspend fun addBook(@Body book: AddBookRequest,
+                        @Header("Authorization") token: String): Response<Unit>
 
     @PUT("api/book")
-    suspend fun updateBook(@Body book: UpdateBookRequest, @Header("Authorization") token: String): Response<Unit>
+    suspend fun updateBook(@Body book: UpdateBookRequest,
+                           @Header("Authorization") token: String): Response<Unit>
 
     @DELETE("api/book/{key}")
-    suspend fun deleteBook(@Path("key") id: Int, @Header("Authorization") token: String): Response<Unit>
+    suspend fun deleteBook(@Path("key") id: Int,
+                           @Header("Authorization") token: String): Response<Unit>
 
 
 
@@ -53,10 +58,12 @@ interface ApiService{
     suspend fun getBasket(@Header("Authorization") token: String) : Response<MutableList<GetBasketResponse>>
 
     @POST("api/basket")
-    suspend fun addBookToBasket(@Body bookItem: AddBookToBasketRequest, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun addBookToBasket(@Body bookItem: AddBookToBasketRequest,
+                                @Header("Authorization") token: String) : Response<Unit>
 
     @DELETE("api/basket/{key}")
-    suspend fun clearBasket(@Path("key") bookId: Int, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun clearBasket(@Path("key") bookId: Int,
+                            @Header("Authorization") token: String) : Response<Unit>
 
     @DELETE("api/basket/clear")
     suspend fun clearBasket(@Header("Authorization") token: String) : Response<Unit>
@@ -67,13 +74,12 @@ interface ApiService{
 
     //Order
     @GET("api/order")
-    suspend fun getOrders(@Query(value="filterName", encoded=true) filterName : String?, @Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
+    suspend fun getOrders(@Query(value="filterName", encoded=true) filterName : String?,
+                          @Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
     @GET("api/order/personal")
     suspend fun getPersonalOrders(@Header("Authorization") token: String) : Response<MutableList<GetOrderResponse>>
 
-    @GET("api/order/{key}")
-    suspend fun getOrderById(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<GetOrderResponse>
 
     @PATCH("api/order")
     suspend fun updateStatus(
@@ -85,23 +91,29 @@ interface ApiService{
     suspend fun makeOrder(@Header("Authorization") token: String) : Response<Unit>
 
     @DELETE("api/order/{key}")
-    suspend fun deleteOrder(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun deleteOrder(@Path("key") orderId: Int,
+                            @Header("Authorization") token: String) : Response<Unit>
 
     @POST("api/order/pay-order")
-    suspend fun payOrder(@Body payOrder: PayOrderRequest, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun payOrder(@Body payOrder: PayOrderRequest,
+                         @Header("Authorization") token: String) : Response<Unit>
 
     //Order-item
     @GET("api/order-item/{key}")
-    suspend fun getOrderItems(@Path("key") orderId: Int, @Header("Authorization") token: String) : Response<MutableList<GetOrderItemResponse>>
+    suspend fun getOrderItems(@Path("key") orderId: Int,
+                              @Header("Authorization") token: String) : Response<MutableList<GetOrderItemResponse>>
 
     @PUT("api/order-item")
-    suspend fun updateOrderItem(@Body orderItem: UpdateOrderItemRequest, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun updateOrderItem(@Body orderItem: UpdateOrderItemRequest,
+                                @Header("Authorization") token: String) : Response<Unit>
 
     @DELETE("api/order-item/{key}")
-    suspend fun deleteOrderItem(@Path("key") itemId: Int, @Header("Authorization") token: String) : Response<Unit>
+    suspend fun deleteOrderItem(@Path("key") itemId: Int,
+                                @Header("Authorization") token: String) : Response<Unit>
 
     //Image
     @POST("/api/image")
-    suspend fun postImage(@Body image: PostImageRequest, @Header("Authorization") token: String): Response<GetImageResponse>
+    suspend fun postImage(@Body image: PostImageRequest,
+                          @Header("Authorization") token: String): Response<GetImageResponse>
 
 }

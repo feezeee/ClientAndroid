@@ -3,17 +3,20 @@ package com.example.kursachclient.presentation.fragment.book_description_fragmen
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.basket.AddBookToBasketRequest
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.domain.model.book.UpdateBookRequest
 import com.example.kursachclient.domain.model.image.GetImageResponse
 import com.example.kursachclient.domain.model.image.PostImageRequest
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class BookDescriptionViewModel : BaseViewModel<GetBookResponse>() {
+import javax.inject.Inject
+@HiltViewModel
+class BookDescriptionViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<GetBookResponse>() {
     val liveDataNeedToNotifyGoneProgressBar: MutableLiveData<Unit> =
         MutableLiveData()
 

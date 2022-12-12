@@ -3,13 +3,16 @@ package com.example.kursachclient.presentation.fragment.order_fragment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.order.GetOrderResponse
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class OrderViewModel : BaseViewModel<List<GetOrderResponse>>() {
+import javax.inject.Inject
+@HiltViewModel
+class OrderViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<List<GetOrderResponse>>() {
 
 
 

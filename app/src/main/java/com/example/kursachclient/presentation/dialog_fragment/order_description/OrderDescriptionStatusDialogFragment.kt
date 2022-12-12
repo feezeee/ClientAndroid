@@ -10,7 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.kursachclient.databinding.FragmentOrderDescriptionDialogBinding
 import com.example.kursachclient.domain.model.order.GetOrderResponse
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderDescriptionStatusDialogFragment(private var item: GetOrderResponse) : DialogFragment() {
 
     private lateinit var binding: FragmentOrderDescriptionDialogBinding

@@ -18,21 +18,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.kursachclient.R
 import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookAddBinding
 import com.example.kursachclient.domain.model.book.AddBookRequest
-import com.example.kursachclient.presentation.MainActivity
+import com.example.kursachclient.MainActivity
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.math.RoundingMode
 
 
+@AndroidEntryPoint
 class BookAddFragment : BaseFragment() {
     lateinit var binding: FragmentBookAddBinding
-    lateinit var viewModel: BookAddViewModel
+    private val viewModel by viewModels<BookAddViewModel>()
 
     private var bitmapMainImage: Bitmap? = null
 
@@ -41,14 +44,14 @@ class BookAddFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = BookAddViewModel()
         pref = SharedPreference(requireContext())
         binding = FragmentBookAddBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View,
+                               savedInstanceState: Bundle?) {
 
         viewModel.liveDataShowToast.observe(viewLifecycleOwner) { message ->
             try {
@@ -249,7 +252,10 @@ class BookAddFragment : BaseFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {

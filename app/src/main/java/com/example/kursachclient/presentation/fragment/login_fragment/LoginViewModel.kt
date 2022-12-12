@@ -2,13 +2,16 @@ package com.example.kursachclient.presentation.fragment.login_fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.kursachclient.domain.ApiService
 import com.example.kursachclient.domain.model.authorization.PostAuthorizerModel
 import com.example.kursachclient.domain.model.authorization.GetTokenRoleModel
 import com.example.kursachclient.presentation.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-class LoginViewModel : BaseViewModel<GetTokenRoleModel>() {
+import javax.inject.Inject
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val apiService: ApiService)  : BaseViewModel<GetTokenRoleModel>() {
     val liveDataNeedToNotifySomeProblemWithServer: MutableLiveData<Unit> =
         MutableLiveData()
 

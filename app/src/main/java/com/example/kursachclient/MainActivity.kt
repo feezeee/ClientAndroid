@@ -1,4 +1,4 @@
-package com.example.kursachclient.presentation
+package com.example.kursachclient
 
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +14,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kursachclient.R
 import com.example.kursachclient.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

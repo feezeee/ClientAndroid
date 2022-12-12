@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
@@ -15,11 +16,14 @@ import com.example.kursachclient.SharedPreference
 import com.example.kursachclient.databinding.FragmentBookBinding
 import com.example.kursachclient.domain.model.book.GetBookResponse
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.book_description_fragment.BookDescriptionViewModel
 import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BookFragment : BaseFragment() {
     lateinit var binding: FragmentBookBinding
-    lateinit var viewModel: BookViewModel
+    private val viewModel by viewModels<BookViewModel>()
     lateinit var adapter: BookAdapter
 
     override fun onCreateView(
@@ -28,7 +32,7 @@ class BookFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         pref = SharedPreference(requireContext())
-        viewModel = BookViewModel()
+
         binding = FragmentBookBinding.inflate(inflater, container, false)
         return binding.root
     }

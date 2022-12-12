@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kursachclient.R
@@ -20,15 +21,18 @@ import com.example.kursachclient.domain.model.order_item.UpdateOrderItemRequest
 import com.example.kursachclient.presentation.dialog_fragment.order_description.OrderDescriptionDialogFragment
 import com.example.kursachclient.presentation.dialog_fragment.order_description.OrderDescriptionStatusDialogFragment
 import com.example.kursachclient.presentation.fragment.BaseFragment
+import com.example.kursachclient.presentation.fragment.login_fragment.LoginViewModel
 import com.example.kursachclient.presentation.sheet_dialog_fragment.delete_item.DeleteItemSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class OrderDescriptionFragment : BaseFragment() {
     lateinit var binding: FragmentOrderDescriptionBinding
-    lateinit var viewModel: OrderDescriptionViewModel
+    private val viewModel by viewModels<OrderDescriptionViewModel>()
     lateinit var adapter: OrderDescriptionAdapter
 
     override fun onCreateView(
@@ -37,7 +41,6 @@ class OrderDescriptionFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         pref = SharedPreference(requireContext())
-        viewModel = OrderDescriptionViewModel()
         binding = FragmentOrderDescriptionBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -11,7 +11,9 @@ import androidx.fragment.app.setFragmentResult
 import com.example.kursachclient.databinding.FragmentBasketDialogBinding
 import com.example.kursachclient.domain.model.basket.GetBasketResponse
 import com.example.kursachclient.domain.model.order_item.GetOrderItemResponse
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OrderDescriptionDialogFragment(private val minValue: UInt, private val maxValue: UInt, private var item: GetOrderItemResponse) : DialogFragment() {
 
     private lateinit var binding: FragmentBasketDialogBinding
