@@ -33,7 +33,7 @@
     <string name="person_first_name">Имя</string>
     <string name="person_last_name">Фамилия</string>
     <string name="person_phone_number">Номер телефона</string>
-    <string name="make_registration">Зарегестрироваться</string>
+    <string name="make_registration">Зарегистрироваться</string>
     <string name="orders">Заказы</string>
     <string name="phone_number">Номер телефона</string>
     <string name="registration_date">Дата регистрации аккаунта</string>
