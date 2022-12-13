@@ -1,5 +1,6 @@
 package com.example.kursachclient
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.findNavController()
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val bottomNavigationView = binding.bottomNavigation
         bottomNavigationView.setupWithNavController(navController)
 
